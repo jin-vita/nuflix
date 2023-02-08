@@ -7,11 +7,9 @@ class NuEpisode extends StatefulWidget {
   const NuEpisode({
     super.key,
     required this.episode,
-    required this.id,
   });
 
   final EpisodeModel episode;
-  final String id;
 
   @override
   State<NuEpisode> createState() => _NuEpisodeState();
@@ -21,11 +19,8 @@ class _NuEpisodeState extends State<NuEpisode> {
   onButtonTap() async {
     // $ flutter pub add url_launcher
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    final liked = prefs.getStringList('like');
-    if (!liked!.contains(widget.id)) {
-      liked.add(widget.id);
-      await prefs.setStringList('like', liked);
-    }
+    await prefs.setString('id', widget.episode.id);
+    await prefs.setString('title', widget.episode.title);
     final url =
         Uri.parse('https://noonoo27.tv/old_entertainment/${widget.episode.id}');
     await launchUrl(url);

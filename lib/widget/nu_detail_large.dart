@@ -62,7 +62,6 @@ class NuDetailLarge extends StatelessWidget {
             for (var episode in episodes)
               NuEpisode(
                 episode: episode,
-                id: program.id,
               ),
           ],
         ),

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:nuflix/model/episode_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../model/program_model.dart';
+import 'nu_episode.dart';
 import 'nu_program.dart';
 
 class NuHomeLarge extends StatelessWidget {
@@ -16,6 +18,10 @@ class NuHomeLarge extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<ProgramModel> myPrograms = [];
+    final EpisodeModel episode = EpisodeModel(
+      title: prefs.getString('title') ?? '',
+      id: prefs.getString('id') ?? '',
+    );
     for (var program in programs) {
       if (prefs.getStringList('like')!.contains(program.id)) {
         myPrograms.add(program);
@@ -40,20 +46,25 @@ class NuHomeLarge extends StatelessWidget {
                   ),
               ],
             ),
-            // const SizedBox(
-            //   height: 40,
-            // ),
-            // Row(
-            //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            //   children: [
-            //     for (var program in myPrograms)
-            //       NuProgram(
-            //         program: program,
-            //         height: 200,
-            //         prefs: prefs,
-            //       ),
-            //   ],
-            // ),
+            const SizedBox(
+              height: 80,
+            ),
+            const Text(
+              '최근 본 영상',
+              style: TextStyle(
+                fontSize: 23,
+                color: Colors.green,
+              ),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            SizedBox(
+              width: 350,
+              child: NuEpisode(
+                episode: episode,
+              ),
+            ),
           ],
         ),
       ),
