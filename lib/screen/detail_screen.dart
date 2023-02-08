@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../model/detail_model.dart';
 import '../model/episode_model.dart';
@@ -7,21 +8,48 @@ import '../widget/nu_appbar.dart';
 import '../widget/nu_detail_large.dart';
 import '../widget/nu_detail_small.dart';
 
-class DetailScreen extends StatelessWidget {
+class DetailScreen extends StatefulWidget {
   const DetailScreen({
     super.key,
     required this.program,
+    required this.prefs,
   });
 
   final ProgramModel program;
+  final SharedPreferences prefs;
 
   @override
-  Widget build(BuildContext context) {
-    late DetailModel detail;
-    late List<EpisodeModel> episodes;
+  State<DetailScreen> createState() => _DetailScreenState();
+}
+
+class _DetailScreenState extends State<DetailScreen> {
+  late DetailModel detail;
+  late List<EpisodeModel> episodes;
+
+  Future initPref() async {
+    if (widget.prefs.getStringList('like') == null) {
+      await widget.prefs.setStringList('like', []);
+    }
+  }
+
+  onHeartTap() async {
+    final liked = widget.prefs.getStringList('like');
+    if (liked != null) {
+      if (liked.contains(widget.program.id)) {
+        liked.remove(widget.program.id);
+      } else {
+        liked.add(widget.program.id);
+      }
+      await widget.prefs.setStringList('like', liked);
+      setState(() {});
+    }
+  }
+
+  initInfo() {
     const String explain =
         '한 번 갇히면, 빠져나올 수 없다?! 극한의 탈출 버라이어티. 그들이 믿을 거라곤.. 오직 동료들뿐! 체력, 정신력, 근성, 재치, 두뇌.. 이 모든 것을 불살라 미스터리로 가득한 ‘초대형 밀실’을 탈출해야 한다! 에피소드마다 새롭게 구현되는 테마와 밀실 공간! 외부와 완벽히 차단된 이곳에서 빈틈투성이 여섯 멤버들은 과연 탈출 할 수 있을까?';
-    if (program.id == 'eoxkfcnf1') {
+
+    if (widget.program.id == 'eoxkfcnf1') {
       detail = DetailModel(
         title: '대탈출 시즌1',
         about: explain,
@@ -43,7 +71,7 @@ class DetailScreen extends StatelessWidget {
         EpisodeModel(title: ' 12화 - 태양여고 - 2 ', id: '597'),
         EpisodeModel(title: ' 13화 - 스페셜 편! ', id: '598'),
       ];
-    } else if (program.id == 'eoxkfcnf2') {
+    } else if (widget.program.id == 'eoxkfcnf2') {
       detail = DetailModel(
         title: '대탈출 시즌2',
         about: explain,
@@ -65,7 +93,7 @@ class DetailScreen extends StatelessWidget {
         EpisodeModel(title: ' 12화 - 살인감옥 Ⅱ ', id: '610'),
         EpisodeModel(title: ' 13화 - 시즌 Ⅱ Special ', id: '611'),
       ];
-    } else if (program.id == 'eoxkfcnf3') {
+    } else if (widget.program.id == 'eoxkfcnf3') {
       detail = DetailModel(
         title: '대탈출 시즌3',
         about: explain,
@@ -87,7 +115,7 @@ class DetailScreen extends StatelessWidget {
         EpisodeModel(title: ' 12화 - 백 투 더 ㄱㅅ 2 ', id: '624'),
         EpisodeModel(title: ' 13화 - 스페셜 ', id: '621'),
       ];
-    } else if (program.id == 'eoxkfcnf4') {
+    } else if (widget.program.id == 'eoxkfcnf4') {
       detail = DetailModel(
         title: '대탈출 시즌4',
         about: explain,
@@ -110,20 +138,40 @@ class DetailScreen extends StatelessWidget {
         EpisodeModel(title: '대탈출 시즌 4 13화', id: '12558'),
       ];
     }
+  }
 
+  @override
+  void initState() {
+    super.initState();
+    initPref();
+    initInfo();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: NuAppBar(
-        title: program.title,
+        title: widget.program.title,
+        action: [
+          IconButton(
+            onPressed: onHeartTap,
+            icon: Icon(
+              widget.prefs.getStringList('like')!.contains(widget.program.id)
+                  ? Icons.favorite
+                  : Icons.favorite_outline,
+            ),
+          )
+        ],
       ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 30),
           child: MediaQuery.of(context).size.width > 959
               ? NuDetailSmall(
-                  program: program, detail: detail, episodes: episodes)
+                  program: widget.program, detail: detail, episodes: episodes)
               : NuDetailLarge(
-                  program: program, detail: detail, episodes: episodes),
+                  program: widget.program, detail: detail, episodes: episodes),
         ),
       ),
     );

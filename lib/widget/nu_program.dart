@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../model/program_model.dart';
 import '../screen/detail_screen.dart';
 import 'nu_thumb_card.dart';
@@ -8,10 +9,12 @@ class NuProgram extends StatelessWidget {
     super.key,
     required this.program,
     required this.height,
+    required this.prefs,
   });
 
   final ProgramModel program;
   final double height;
+  final SharedPreferences prefs;
 
   @override
   Widget build(BuildContext context) {
@@ -22,6 +25,7 @@ class NuProgram extends StatelessWidget {
           CupertinoPageRoute(
             builder: (context) => DetailScreen(
               program: program,
+              prefs: prefs,
             ),
             fullscreenDialog: true,
           ),

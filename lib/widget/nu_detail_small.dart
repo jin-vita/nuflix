@@ -63,6 +63,7 @@ class NuDetailSmall extends StatelessWidget {
                   for (int i = 0; i < 6; i++)
                     NuEpisode(
                       episode: episodes[i],
+                      id: program.id,
                     ),
                 ],
               ),
@@ -76,6 +77,7 @@ class NuDetailSmall extends StatelessWidget {
                   for (int i = 6; i < episodes.length; i++)
                     NuEpisode(
                       episode: episodes[i],
+                      id: program.id,
                     ),
                 ],
               ),

@@ -1,19 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:nuflix/model/episode_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class NuEpisode extends StatelessWidget {
+class NuEpisode extends StatefulWidget {
   const NuEpisode({
     super.key,
     required this.episode,
+    required this.id,
   });
 
   final EpisodeModel episode;
+  final String id;
 
+  @override
+  State<NuEpisode> createState() => _NuEpisodeState();
+}
+
+class _NuEpisodeState extends State<NuEpisode> {
   onButtonTap() async {
+    // $ flutter pub add url_launcher
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final liked = prefs.getStringList('like');
+    if (!liked!.contains(widget.id)) {
+      liked.add(widget.id);
+      await prefs.setStringList('like', liked);
+    }
     final url =
-        Uri.parse('https://noonoo27.tv/old_entertainment/${episode.id}');
+        Uri.parse('https://noonoo27.tv/old_entertainment/${widget.episode.id}');
     await launchUrl(url);
+    setState(() {});
   }
 
   @override
@@ -48,7 +64,7 @@ class NuEpisode extends StatelessWidget {
             children: [
               Expanded(
                 child: Text(
-                  episode.title,
+                  widget.episode.title,
                   style: const TextStyle(
                     color: Colors.green,
                     fontSize: 17,

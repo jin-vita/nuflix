@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 class NuAppBar extends StatelessWidget with PreferredSizeWidget {
-  const NuAppBar({super.key, required this.title});
+  const NuAppBar({super.key, required this.title, this.action});
+  final List<Widget>? action;
   final String title;
 
   @override
@@ -10,6 +11,7 @@ class NuAppBar extends StatelessWidget with PreferredSizeWidget {
       elevation: 3,
       backgroundColor: Colors.white,
       foregroundColor: Colors.green,
+      actions: action,
       centerTitle: true,
       title: Text(
         title,
