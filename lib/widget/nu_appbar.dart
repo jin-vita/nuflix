@@ -1,0 +1,26 @@
+import 'package:flutter/material.dart';
+
+class NuAppBar extends StatelessWidget with PreferredSizeWidget {
+  const NuAppBar({super.key, required this.title});
+  final String title;
+
+  @override
+  Widget build(BuildContext context) {
+    return AppBar(
+      elevation: 3,
+      backgroundColor: Colors.white,
+      foregroundColor: Colors.green,
+      centerTitle: true,
+      title: Text(
+        title,
+        style: const TextStyle(
+          fontSize: 24,
+          fontWeight: FontWeight.w600,
+        ),
+      ),
+    );
+  }
+
+  @override
+  Size get preferredSize => const Size.fromHeight(55);
+}
