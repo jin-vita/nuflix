@@ -33,7 +33,30 @@ class _NuHomeLargeState extends State<NuHomeLarge> {
       id: widget.prefs.getString('id') ?? '',
     );
 
-    List<ProgramModel>? myPrograms = widget.programs;
+    List<ProgramModel> myPrograms = [];
+    for (var program in widget.programs) {
+      if (widget.prefs.getStringList('like')!.contains(program.id)) {
+        myPrograms.add(program);
+      }
+    }
+
+    Future<void> goDetailScreen(
+        BuildContext context, ProgramModel program) async {
+      await Navigator.push(
+        context,
+        CupertinoPageRoute(
+          builder: (context) => DetailScreen(
+            program: program,
+            prefs: widget.prefs,
+            isHeart: widget.isHeart,
+          ),
+          fullscreenDialog: true,
+        ),
+      );
+      try {
+        setState(() {});
+      } catch (_) {}
+    }
 
     return SingleChildScrollView(
       child: Container(
@@ -42,47 +65,41 @@ class _NuHomeLargeState extends State<NuHomeLarge> {
         ),
         child: Column(
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                for (var program in myPrograms)
-                  GestureDetector(
-                    onTap: () async {
-                      await Navigator.push(
-                        context,
-                        CupertinoPageRoute(
-                          builder: (context) => DetailScreen(
-                            program: program,
-                            prefs: widget.prefs,
-                            isHeart: widget.isHeart,
-                          ),
-                          fullscreenDialog: true,
-                        ),
-                      );
-
-                      myPrograms = widget.prefs.getStringList('like')!.cast<ProgramModel>();
-                      setState(() {});
-                    },
-                    child: Column(
-                      children: [
-                        NuThumbCard(
-                          program: program,
-                          height: 300,
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                          program.title,
-                          style: const TextStyle(
-                            fontSize: 16,
+            widget.isHeart && myPrograms.isEmpty
+                ? Container(
+                    alignment: Alignment.center,
+                    height: 300,
+                    child: const Text('즐겨찾기한 프로그램이 없습니다.'),
+                  )
+                : Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      for (var program
+                          in widget.isHeart ? myPrograms : widget.programs)
+                        GestureDetector(
+                          onTap: () async {
+                            await goDetailScreen(context, program);
+                          },
+                          child: Column(
+                            children: [
+                              NuThumbCard(
+                                program: program,
+                                height: 300,
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              Text(
+                                program.title,
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                      ],
-                    ),
+                    ],
                   ),
-              ],
-            ),
             const SizedBox(
               height: 70,
             ),
@@ -90,6 +107,7 @@ class _NuHomeLargeState extends State<NuHomeLarge> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
+                const SizedBox(),
                 Column(
                   children: [
                     const Text(
@@ -112,6 +130,8 @@ class _NuHomeLargeState extends State<NuHomeLarge> {
                     ),
                   ],
                 ),
+                const SizedBox(),
+                const SizedBox(),
                 Visibility(
                   visible: !widget.isHeart,
                   child: Column(
@@ -147,6 +167,8 @@ class _NuHomeLargeState extends State<NuHomeLarge> {
                     ],
                   ),
                 ),
+                const SizedBox(),
+                const SizedBox(),
               ],
             ),
           ],

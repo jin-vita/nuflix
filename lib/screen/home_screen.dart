@@ -72,7 +72,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   future: prefsFuture,
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
-                      return MediaQuery.of(context).size.width > 959
+                      return MediaQuery.of(context).size.width > 960
                           ? NuHomeLarge(
                               programs: programs,
                               prefs: snapshot.data!,
@@ -81,6 +81,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           : NuHomeSmall(
                               programs: programs,
                               prefs: snapshot.data!,
+                              isHeart: false,
                             );
                     }
                     return const Center(

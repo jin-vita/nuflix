@@ -171,29 +171,18 @@ class _DetailScreenState extends State<DetailScreen> {
                   ? Icons.favorite
                   : Icons.favorite_outline,
             ),
-          )
+          ),
         ],
       ),
       body: WillPopScope(
         onWillPop: () {
-          Navigator.pop(context);
-          if (!widget.prefs
-                  .getStringList('like')!
-                  .contains(widget.program.id) &&
-              widget.isHeart) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const HomeScreen(),
-              ),
-            );
-          } else {}
+          Navigator.pop(context, 'back');
           return Future(() => false);
         },
         child: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 30),
-            child: MediaQuery.of(context).size.width > 959
+            child: MediaQuery.of(context).size.width > 960
                 ? NuDetailSmall(
                     program: widget.program, detail: detail, episodes: episodes)
                 : NuDetailLarge(
@@ -204,5 +193,19 @@ class _DetailScreenState extends State<DetailScreen> {
         ),
       ),
     );
+  }
+
+  Future<bool> backAction(BuildContext context) {
+    Navigator.pop(context);
+    if (!widget.prefs.getStringList('like')!.contains(widget.program.id) &&
+        widget.isHeart) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const HomeScreen(),
+        ),
+      );
+    } else {}
+    return Future(() => false);
   }
 }

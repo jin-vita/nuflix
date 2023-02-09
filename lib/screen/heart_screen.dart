@@ -52,7 +52,7 @@ class _HeartScreenState extends State<HeartScreen> {
                   PointerDeviceKind.mouse,
                 },
               ),
-              child: MediaQuery.of(context).size.width > 959
+              child: MediaQuery.of(context).size.width > 960
                   ? NuHomeLarge(
                       programs: myPrograms,
                       prefs: widget.prefs,
@@ -61,6 +61,7 @@ class _HeartScreenState extends State<HeartScreen> {
                   : NuHomeSmall(
                       programs: myPrograms,
                       prefs: widget.prefs,
+                      isHeart: true,
                     ),
             ),
           ),
