@@ -12,6 +12,7 @@ class MyApp extends StatelessWidget {
 
   // $ flutter pub add url_launcher
   // $ flutter pub add fluttertoast
+  // $ flutter pub add audio_video_progress_bar
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(

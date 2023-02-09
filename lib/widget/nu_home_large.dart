@@ -1,3 +1,4 @@
+import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -128,6 +129,24 @@ class _NuHomeLargeState extends State<NuHomeLarge> {
                               episode: episode,
                             ),
                     ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    SizedBox(
+                      width: 350,
+                      child: ProgressBar(
+                        thumbColor: Colors.green,
+                        baseBarColor: Colors.green.withOpacity(0.3),
+                        progressBarColor: Colors.green,
+                        progress: Duration(
+                          milliseconds: widget.prefs.getInt('progress') ?? 0,
+                        ),
+                        total: const Duration(minutes: 80),
+                        onSeek: (value) {
+                          widget.prefs.setInt('progress', value.inMilliseconds);
+                        },
+                      ),
+                    ),
                   ],
                 ),
                 const SizedBox(),
@@ -142,6 +161,9 @@ class _NuHomeLargeState extends State<NuHomeLarge> {
                           fontSize: 23,
                           color: Colors.green,
                         ),
+                      ),
+                      const SizedBox(
+                        height: 20,
                       ),
                       IconButton(
                         onPressed: () {
@@ -158,11 +180,21 @@ class _NuHomeLargeState extends State<NuHomeLarge> {
                                   ),
                                 );
                         },
-                        icon: const Icon(
-                          Icons.folder_special,
-                          color: Colors.green,
+                        icon: Transform.scale(
+                          scale: 1.5,
+                          child: Icon(
+                            Icons.folder_special,
+                            shadows: [
+                              BoxShadow(
+                                blurRadius: 15,
+                                offset: const Offset(10, 10),
+                                color: Colors.black.withOpacity(0.3),
+                              ),
+                            ],
+                            color: Colors.green,
+                          ),
                         ),
-                        iconSize: 90,
+                        iconSize: 100,
                       ),
                     ],
                   ),

@@ -48,7 +48,7 @@ class _HomeScreenState extends State<HomeScreen> {
       backgroundColor: Colors.white,
       appBar: const NuAppBar(
         hasIcon: false,
-        title: '대탈출 다시보기',
+        title: '누 플 릭 스',
       ),
       body: WillPopScope(
         onWillPop: () {
