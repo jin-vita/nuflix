@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:nuflix/model/episode_model.dart';
 import 'package:nuflix/screen/heart_screen.dart';
+import 'package:nuflix/screen/home_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../model/program_model.dart';
 import '../screen/detail_screen.dart';
@@ -40,6 +41,7 @@ class _NuHomeLargeState extends State<NuHomeLarge> {
         myPrograms.add(program);
       }
     }
+    HomeScreenState.of(context).programs;
 
     Future<void> goDetailScreen(
         BuildContext context, ProgramModel program) async {

@@ -12,16 +12,23 @@ class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<HomeScreen> createState() => HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class HomeScreenState extends State<HomeScreen> {
   final List<ProgramModel> programs = [
     ProgramModel(title: '대탈출 시즌1', thumb: 'big1.jpg', id: 'eoxkfcnf1'),
     ProgramModel(title: '대탈출 시즌2', thumb: 'big2.jpg', id: 'eoxkfcnf2'),
     ProgramModel(title: '대탈출 시즌3', thumb: 'big3.jpg', id: 'eoxkfcnf3'),
     ProgramModel(title: '대탈출 시즌4', thumb: 'big4.jpg', id: 'eoxkfcnf4'),
   ];
+
+  static HomeScreenState of(BuildContext context) {
+    final HomeScreenState? result =
+        context.findAncestorStateOfType<HomeScreenState>();
+    assert(result != null, 'No HomeScreen found in context');
+    return result!;
+  }
 
   late Future<SharedPreferences> prefsFuture;
 
