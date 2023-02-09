@@ -1,13 +1,20 @@
 import 'package:flutter/material.dart';
 
 class NuAppBar extends StatelessWidget with PreferredSizeWidget {
-  const NuAppBar({super.key, required this.title, this.action});
+  const NuAppBar({
+    super.key,
+    required this.title,
+    this.action,
+    required this.hasIcon,
+  });
   final List<Widget>? action;
   final String title;
+  final bool hasIcon;
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      automaticallyImplyLeading: hasIcon,
       elevation: 3,
       backgroundColor: Colors.white,
       foregroundColor: Colors.green,

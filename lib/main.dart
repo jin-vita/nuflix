@@ -9,6 +9,9 @@ class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   // This widget is the root of your application.
+
+  // $ flutter pub add url_launcher
+  // $ flutter pub add fluttertoast
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(

@@ -17,7 +17,6 @@ class NuEpisode extends StatefulWidget {
 
 class _NuEpisodeState extends State<NuEpisode> {
   onButtonTap() async {
-    // $ flutter pub add url_launcher
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString('id', widget.episode.id);
     await prefs.setString('title', widget.episode.title);
