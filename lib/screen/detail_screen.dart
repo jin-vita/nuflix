@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:nuflix/screen/home_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../model/detail_model.dart';
@@ -14,12 +13,10 @@ class DetailScreen extends StatefulWidget {
     super.key,
     required this.program,
     required this.prefs,
-    required this.isHeart,
   });
 
   final ProgramModel program;
   final SharedPreferences prefs;
-  final bool isHeart;
 
   @override
   State<DetailScreen> createState() => _DetailScreenState();
@@ -193,19 +190,5 @@ class _DetailScreenState extends State<DetailScreen> {
         ),
       ),
     );
-  }
-
-  Future<bool> backAction(BuildContext context) {
-    Navigator.pop(context);
-    if (!widget.prefs.getStringList('like')!.contains(widget.program.id) &&
-        widget.isHeart) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const HomeScreen(),
-        ),
-      );
-    } else {}
-    return Future(() => false);
   }
 }

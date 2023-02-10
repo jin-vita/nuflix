@@ -1,7 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:provider/provider.dart';
+import '../data.dart';
 import '../model/episode_model.dart';
 import '../model/program_model.dart';
 import '../screen/detail_screen.dart';
@@ -9,36 +10,17 @@ import '../screen/heart_screen.dart';
 import 'nu_episode.dart';
 import 'nu_thumb_card.dart';
 
-class NuHomeSmall extends StatefulWidget {
+class NuHomeSmall extends StatelessWidget {
   const NuHomeSmall({
     super.key,
-    required this.programs,
-    required this.prefs,
     required this.isHeart,
   });
 
-  final List<ProgramModel> programs;
-  final SharedPreferences prefs;
   final bool isHeart;
 
   @override
-  State<NuHomeSmall> createState() => _NuHomeSmallState();
-}
-
-class _NuHomeSmallState extends State<NuHomeSmall> {
-  @override
   Widget build(BuildContext context) {
-    final EpisodeModel episode = EpisodeModel(
-      title: widget.prefs.getString('title') ?? '',
-      id: widget.prefs.getString('id') ?? '',
-    );
-
-    List<ProgramModel> myPrograms = [];
-    for (var program in widget.programs) {
-      if (widget.prefs.getStringList('like')!.contains(program.id)) {
-        myPrograms.add(program);
-      }
-    }
+    Data data = Provider.of(context);
 
     Future<void> goDetailScreen(
         BuildContext context, ProgramModel program) async {
@@ -47,21 +29,25 @@ class _NuHomeSmallState extends State<NuHomeSmall> {
         CupertinoPageRoute(
           builder: (context) => DetailScreen(
             program: program,
-            prefs: widget.prefs,
-            isHeart: widget.isHeart,
+            prefs: data.prefs,
           ),
           fullscreenDialog: true,
         ),
       );
-      try {
-        setState(() {});
-      } catch (_) {}
+      data.applyData();
+    }
+
+    List<ProgramModel> myPrograms = [];
+    for (var program in data.programs) {
+      if (data.prefs.getStringList('like')!.contains(program.id)) {
+        myPrograms.add(program);
+      }
     }
 
     return SingleChildScrollView(
       child: Column(
         children: [
-          widget.isHeart && myPrograms.isEmpty
+          isHeart && myPrograms.isEmpty
               ? Container(
                   alignment: Alignment.center,
                   height: 300,
@@ -75,13 +61,11 @@ class _NuHomeSmallState extends State<NuHomeSmall> {
                       horizontal: 30,
                       vertical: 10,
                     ),
-                    itemCount: widget.isHeart
-                        ? myPrograms.length
-                        : widget.programs.length,
+                    itemCount:
+                        isHeart ? myPrograms.length : data.programs.length,
                     itemBuilder: (context, index) {
-                      var program = widget.isHeart
-                          ? myPrograms[index]
-                          : widget.programs[index];
+                      var program =
+                          isHeart ? myPrograms[index] : data.programs[index];
                       return GestureDetector(
                         onTap: () async {
                           await goDetailScreen(context, program);
@@ -124,17 +108,20 @@ class _NuHomeSmallState extends State<NuHomeSmall> {
               ),
               SizedBox(
                 width: 350,
-                child: episode.id == ''
+                child: data.prefs.getString('id') == null
                     ? const Center(child: Text('최근 본 영상이 없습니다.'))
                     : NuEpisode(
-                        episode: episode,
+                        episode: EpisodeModel(
+                          title: data.prefs.getString('title')!,
+                          id: data.prefs.getString('id')!,
+                        ),
                       ),
               ),
               const SizedBox(
                 height: 30,
               ),
               Visibility(
-                visible: !widget.isHeart,
+                visible: !isHeart,
                 child: Column(
                   children: [
                     const Text(
@@ -146,14 +133,14 @@ class _NuHomeSmallState extends State<NuHomeSmall> {
                     ),
                     IconButton(
                       onPressed: () {
-                        widget.prefs.getStringList('like')!.isEmpty
+                        data.prefs.getStringList('like')!.isEmpty
                             ? Fluttertoast.showToast(msg: '즐겨찾기한 프로그램이 없습니다.')
                             : Navigator.push(
                                 context,
                                 CupertinoPageRoute(
                                   builder: (context) => HeartScreen(
-                                    programs: widget.programs,
-                                    prefs: widget.prefs,
+                                    programs: data.programs,
+                                    prefs: data.prefs,
                                   ),
                                   fullscreenDialog: true,
                                 ),

@@ -53,14 +53,10 @@ class _HeartScreenState extends State<HeartScreen> {
                 },
               ),
               child: MediaQuery.of(context).size.width > 960
-                  ? NuHomeLarge(
-                      programs: myPrograms,
-                      prefs: widget.prefs,
+                  ? const NuHomeLarge(
                       isHeart: true,
                     )
-                  : NuHomeSmall(
-                      programs: myPrograms,
-                      prefs: widget.prefs,
+                  : const NuHomeSmall(
                       isHeart: true,
                     ),
             ),

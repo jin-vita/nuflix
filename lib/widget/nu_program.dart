@@ -26,7 +26,6 @@ class NuProgram extends StatelessWidget {
             builder: (context) => DetailScreen(
               program: program,
               prefs: prefs,
-              isHeart: false,
             ),
             fullscreenDialog: true,
           ),
