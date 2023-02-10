@@ -3,7 +3,9 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:nuflix/widget/nu_appbar.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../data.dart';
 import '../model/program_model.dart';
 import '../widget/nu_home_large.dart';
 import '../widget/nu_home_small.dart';
@@ -46,59 +48,72 @@ class HomeScreenState extends State<HomeScreen> {
     prefsFuture = initPref();
   }
 
+  void changeHeart() {
+    Data data = Provider.of<Data>(context, listen: false);
+    data.setData(isHeart: !data.isHeart);
+    data.applyData();
+  }
+
   @override
   Widget build(BuildContext context) {
     // ignore: unused_local_variable
     DateTime? currentBackPressTime;
 
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: const NuAppBar(
-        hasIcon: false,
-        title: '누 플 릭 스',
-      ),
-      body: WillPopScope(
-        onWillPop: () {
-          return exit2();
-        },
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const SizedBox(
-              height: 20,
-            ),
-            Expanded(
-              child: ScrollConfiguration(
-                behavior: ScrollConfiguration.of(context).copyWith(
-                  dragDevices: {
-                    PointerDeviceKind.touch,
-                    PointerDeviceKind.mouse,
-                  },
-                ),
-                child: FutureBuilder(
-                  future: prefsFuture,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      return MediaQuery.of(context).size.width > 960
-                          ? NuHomeLarge(
-                              programs: programs,
-                              prefs: snapshot.data!,
-                              isHeart: false,
-                            )
-                          : NuHomeSmall(
-                              programs: programs,
-                              prefs: snapshot.data!,
-                              isHeart: false,
-                            );
-                    }
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  },
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (context) => Data(),
+        ),
+      ],
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        appBar: const NuAppBar(
+          hasIcon: false,
+          title: '누 플 릭 스',
+        ),
+        body: WillPopScope(
+          onWillPop: () {
+            return exit2();
+          },
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const SizedBox(
+                height: 20,
+              ),
+              Expanded(
+                child: ScrollConfiguration(
+                  behavior: ScrollConfiguration.of(context).copyWith(
+                    dragDevices: {
+                      PointerDeviceKind.touch,
+                      PointerDeviceKind.mouse,
+                    },
+                  ),
+                  child: FutureBuilder(
+                    future: prefsFuture,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        return MediaQuery.of(context).size.width > 960
+                            ? NuHomeLarge(
+                                programs: programs,
+                                prefs: snapshot.data!,
+                                isHeart: false,
+                              )
+                            : NuHomeSmall(
+                                programs: programs,
+                                prefs: snapshot.data!,
+                                isHeart: false,
+                              );
+                      }
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    },
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -152,6 +167,7 @@ class HomeScreenState extends State<HomeScreen> {
                   ),
                   TextButton(
                     onPressed: () {
+                      changeHeart();
                       //onWillpop에 false 전달되어 앱이 종료되지 않는다.
                       Navigator.pop(context, false);
                     },
