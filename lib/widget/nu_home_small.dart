@@ -1,3 +1,4 @@
+import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -32,6 +33,9 @@ class NuHomeSmall extends StatelessWidget {
     return SingleChildScrollView(
       child: Column(
         children: [
+          const SizedBox(
+            height: 30,
+          ),
           isHeart && myPrograms.isEmpty
               ? Container(
                   alignment: Alignment.center,
@@ -44,7 +48,6 @@ class NuHomeSmall extends StatelessWidget {
                     scrollDirection: Axis.horizontal,
                     padding: const EdgeInsets.symmetric(
                       horizontal: 30,
-                      vertical: 10,
                     ),
                     itemCount:
                         isHeart ? myPrograms.length : data.programs.length,
@@ -58,99 +61,116 @@ class NuHomeSmall extends StatelessWidget {
                     ),
                   ),
                 ),
+          const Text(
+            '최근 본 영상 시청',
+            style: TextStyle(
+              fontSize: 23,
+              color: Colors.green,
+            ),
+          ),
+          const SizedBox(
+            height: 30,
+          ),
+          SizedBox(
+            width: 350,
+            child: data.prefs.getString('id') == null
+                ? const Center(child: Text('최근 본 영상이 없습니다.'))
+                : NuEpisode(
+                    episode: EpisodeModel(
+                      title: data.prefs.getString('title')!,
+                      id: data.prefs.getString('id')!,
+                    ),
+                  ),
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          SizedBox(
+            width: 350,
+            child: ProgressBar(
+              thumbColor: Colors.green,
+              baseBarColor: Colors.green.withOpacity(0.3),
+              progressBarColor: Colors.green,
+              progress: Duration(
+                milliseconds: data.prefs.getInt('progress') ?? 0,
+              ),
+              total: const Duration(minutes: 80),
+              onSeek: (percent) {
+                data.prefs.setInt('progress', percent.inMilliseconds);
+              },
+            ),
+          ),
+          const SizedBox(
+            height: 30,
+          ),
+          Visibility(
+            visible: !isHeart,
+            child: Column(
+              children: [
+                const Text(
+                  '즐겨찾기',
+                  style: TextStyle(
+                    fontSize: 23,
+                    color: Colors.green,
+                  ),
+                ),
+                IconButton(
+                  onPressed: () {
+                    data.prefs.getStringList('like')!.isEmpty
+                        ? Fluttertoast.showToast(msg: '즐겨찾기한 프로그램이 없습니다.')
+                        : Navigator.push(
+                            context,
+                            CupertinoPageRoute(
+                              builder: (context) => HeartScreen(
+                                programs: data.programs,
+                                prefs: data.prefs,
+                              ),
+                              fullscreenDialog: true,
+                            ),
+                          );
+                  },
+                  icon: const Icon(
+                    Icons.folder_special,
+                    color: Colors.green,
+                  ),
+                  iconSize: 90,
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(
+            height: 20,
+          ),
           Column(
             children: [
               const Text(
-                '최근 본 영상 시청',
+                '영상이 안보일때 클릭',
                 style: TextStyle(
                   fontSize: 23,
                   color: Colors.green,
                 ),
               ),
-              const SizedBox(
-                height: 30,
-              ),
-              SizedBox(
-                width: 350,
-                child: data.prefs.getString('id') == null
-                    ? const Center(child: Text('최근 본 영상이 없습니다.'))
-                    : NuEpisode(
-                        episode: EpisodeModel(
-                          title: data.prefs.getString('title')!,
-                          id: data.prefs.getString('id')!,
-                        ),
-                      ),
-              ),
-              const SizedBox(
-                height: 30,
-              ),
-              Visibility(
-                visible: !isHeart,
-                child: Column(
-                  children: [
-                    const Text(
-                      '즐겨찾기',
-                      style: TextStyle(
-                        fontSize: 23,
-                        color: Colors.green,
-                      ),
-                    ),
-                    IconButton(
-                      onPressed: () {
-                        data.prefs.getStringList('like')!.isEmpty
-                            ? Fluttertoast.showToast(msg: '즐겨찾기한 프로그램이 없습니다.')
-                            : Navigator.push(
-                                context,
-                                CupertinoPageRoute(
-                                  builder: (context) => HeartScreen(
-                                    programs: data.programs,
-                                    prefs: data.prefs,
-                                  ),
-                                  fullscreenDialog: true,
-                                ),
-                              );
-                      },
-                      icon: const Icon(
-                        Icons.folder_special,
-                        color: Colors.green,
-                      ),
-                      iconSize: 90,
+              IconButton(
+                onPressed: () {
+                  showUrlDialog(context, data.prefs);
+                },
+                icon: Icon(
+                  Icons.network_check_rounded,
+                  shadows: [
+                    BoxShadow(
+                      blurRadius: 15,
+                      offset: const Offset(10, 10),
+                      color: Colors.black.withOpacity(0.3),
                     ),
                   ],
+                  color: Colors.green,
                 ),
-              ),
-              const SizedBox(
-                height: 50,
-              ),
-              Column(
-                children: [
-                  const Text(
-                    '영상이 안보일때 클릭',
-                    style: TextStyle(
-                      fontSize: 23,
-                      color: Colors.green,
-                    ),
-                  ),
-                  IconButton(
-                    onPressed: () {
-                      showUrlDialog(context, data.prefs);
-                    },
-                    icon: Icon(
-                      Icons.network_check_rounded,
-                      shadows: [
-                        BoxShadow(
-                          blurRadius: 15,
-                          offset: const Offset(10, 10),
-                          color: Colors.black.withOpacity(0.3),
-                        ),
-                      ],
-                      color: Colors.green,
-                    ),
-                    iconSize: 90,
-                  ),
-                ],
+                iconSize: 90,
               ),
             ],
+          ),
+          const SizedBox(
+            height: 20,
           ),
         ],
       ),

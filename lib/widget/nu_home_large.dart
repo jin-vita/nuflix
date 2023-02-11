@@ -33,7 +33,7 @@ class NuHomeLarge extends StatelessWidget {
     return SingleChildScrollView(
       child: Container(
         padding: const EdgeInsets.only(
-          top: 10,
+          top: 30,
         ),
         child: Column(
           children: [
@@ -102,7 +102,6 @@ class NuHomeLarge extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(),
-                const SizedBox(),
                 Visibility(
                   visible: !isHeart,
                   child: Column(
@@ -161,7 +160,7 @@ class NuHomeLarge extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(
-                      height: 20,
+                      height: 15,
                     ),
                     IconButton(
                       onPressed: () {
