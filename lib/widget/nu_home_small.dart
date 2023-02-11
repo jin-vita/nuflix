@@ -31,146 +31,155 @@ class NuHomeSmall extends StatelessWidget {
     }
 
     return SingleChildScrollView(
-      child: Column(
-        children: [
-          const SizedBox(
-            height: 30,
-          ),
-          isHeart && myPrograms.isEmpty
-              ? Container(
-                  alignment: Alignment.center,
-                  height: 300,
-                  child: const Text('즐겨찾기한 프로그램이 없습니다.'),
-                )
-              : SizedBox(
-                  height: 370,
-                  child: ListView.separated(
-                    scrollDirection: Axis.horizontal,
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 30,
-                    ),
-                    itemCount:
-                        isHeart ? myPrograms.length : data.programs.length,
-                    itemBuilder: (context, index) {
-                      var program =
-                          isHeart ? myPrograms[index] : data.programs[index];
-                      return NuProgram(program: program);
-                    },
-                    separatorBuilder: (context, index) => const SizedBox(
-                      width: 30,
-                    ),
-                  ),
-                ),
-          const Text(
-            '최근 본 영상 시청',
-            style: TextStyle(
-              fontSize: 23,
-              color: Colors.green,
-            ),
-          ),
-          const SizedBox(
-            height: 30,
-          ),
-          SizedBox(
-            width: 350,
-            child: data.prefs.getString('id') == null
-                ? const Center(child: Text('최근 본 영상이 없습니다.'))
-                : NuEpisode(
-                    episode: EpisodeModel(
-                      title: data.prefs.getString('title')!,
-                      id: data.prefs.getString('id')!,
+      child: Container(
+        padding: const EdgeInsets.symmetric(
+          vertical: 30,
+        ),
+        child: Column(
+          children: [
+            isHeart && myPrograms.isEmpty
+                ? Container(
+                    alignment: Alignment.center,
+                    height: 300,
+                    child: const Text('즐겨찾기한 프로그램이 없습니다.'),
+                  )
+                : SizedBox(
+                    height: 370,
+                    child: ListView.separated(
+                      scrollDirection: Axis.horizontal,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 30,
+                      ),
+                      itemCount:
+                          isHeart ? myPrograms.length : data.programs.length,
+                      itemBuilder: (context, index) {
+                        var program =
+                            isHeart ? myPrograms[index] : data.programs[index];
+                        return NuProgram(program: program);
+                      },
+                      separatorBuilder: (context, index) => const SizedBox(
+                        width: 30,
+                      ),
                     ),
                   ),
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          SizedBox(
-            width: 350,
-            child: ProgressBar(
-              thumbColor: Colors.green,
-              baseBarColor: Colors.green.withOpacity(0.3),
-              progressBarColor: Colors.green,
-              progress: Duration(
-                milliseconds: data.prefs.getInt('progress') ?? 0,
+            Container(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 50,
               ),
-              total: const Duration(minutes: 80),
-              onSeek: (percent) {
-                data.prefs.setInt('progress', percent.inMilliseconds);
-              },
-            ),
-          ),
-          const SizedBox(
-            height: 30,
-          ),
-          Visibility(
-            visible: !isHeart,
-            child: Column(
-              children: [
-                const Text(
-                  '즐겨찾기',
-                  style: TextStyle(
-                    fontSize: 23,
-                    color: Colors.green,
+              child: Column(
+                children: [
+                  const Text(
+                    '최근 본 영상 시청',
+                    style: TextStyle(
+                      fontSize: 23,
+                      color: Colors.green,
+                    ),
                   ),
-                ),
-                IconButton(
-                  onPressed: () {
-                    data.prefs.getStringList('like')!.isEmpty
-                        ? Fluttertoast.showToast(msg: '즐겨찾기한 프로그램이 없습니다.')
-                        : Navigator.push(
-                            context,
-                            CupertinoPageRoute(
-                              builder: (context) =>
-                                  const HomeScreen(isHeart: true),
-                              fullscreenDialog: true,
+                  const SizedBox(
+                    height: 25,
+                  ),
+                  SizedBox(
+                    width: 350,
+                    child: data.prefs.getString('id') == null
+                        ? const Center(child: Text('최근 본 영상이 없습니다.'))
+                        : NuEpisode(
+                            episode: EpisodeModel(
+                              title: data.prefs.getString('title')!,
+                              id: data.prefs.getString('id')!,
                             ),
-                          );
-                  },
-                  icon: const Icon(
-                    Icons.folder_special,
-                    color: Colors.green,
+                          ),
                   ),
-                  iconSize: 90,
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          Column(
-            children: [
-              const Text(
-                '영상이 안보일때 클릭',
-                style: TextStyle(
-                  fontSize: 23,
-                  color: Colors.green,
-                ),
-              ),
-              IconButton(
-                onPressed: () {
-                  showUrlDialog(context, data.prefs);
-                },
-                icon: Icon(
-                  Icons.network_check_rounded,
-                  shadows: [
-                    BoxShadow(
-                      blurRadius: 15,
-                      offset: const Offset(10, 10),
-                      color: Colors.black.withOpacity(0.3),
+                  const SizedBox(
+                    height: 25,
+                  ),
+                  SizedBox(
+                    width: 350,
+                    child: ProgressBar(
+                      thumbColor: Colors.green,
+                      baseBarColor: Colors.green.withOpacity(0.3),
+                      progressBarColor: Colors.green,
+                      progress: Duration(
+                        milliseconds: data.prefs.getInt('progress') ?? 0,
+                      ),
+                      total: const Duration(minutes: 80),
+                      onSeek: (percent) {
+                        data.prefs.setInt('progress', percent.inMilliseconds);
+                      },
                     ),
-                  ],
-                  color: Colors.green,
-                ),
-                iconSize: 90,
+                  ),
+                  const SizedBox(
+                    height: 25,
+                  ),
+                  Visibility(
+                    visible: !isHeart,
+                    child: Column(
+                      children: [
+                        const Text(
+                          '즐겨찾기',
+                          style: TextStyle(
+                            fontSize: 23,
+                            color: Colors.green,
+                          ),
+                        ),
+                        IconButton(
+                          onPressed: () {
+                            data.prefs.getStringList('like')!.isEmpty
+                                ? Fluttertoast.showToast(
+                                    msg: '즐겨찾기한 프로그램이 없습니다.')
+                                : Navigator.push(
+                                    context,
+                                    CupertinoPageRoute(
+                                      builder: (context) =>
+                                          const HomeScreen(isHeart: true),
+                                      fullscreenDialog: true,
+                                    ),
+                                  );
+                          },
+                          icon: const Icon(
+                            Icons.folder_special,
+                            color: Colors.green,
+                          ),
+                          iconSize: 90,
+                        ),
+                        const SizedBox(
+                          height: 25,
+                        ),
+                      ],
+                    ),
+                  ),
+                  Column(
+                    children: [
+                      const Text(
+                        '영상이 안보일때 클릭',
+                        style: TextStyle(
+                          fontSize: 23,
+                          color: Colors.green,
+                        ),
+                      ),
+                      IconButton(
+                        onPressed: () {
+                          showUrlDialog(context, data.prefs);
+                        },
+                        icon: Icon(
+                          Icons.network_check_rounded,
+                          shadows: [
+                            BoxShadow(
+                              blurRadius: 15,
+                              offset: const Offset(10, 10),
+                              color: Colors.black.withOpacity(0.3),
+                            ),
+                          ],
+                          color: Colors.green,
+                        ),
+                        iconSize: 90,
+                      ),
+                    ],
+                  ),
+                ],
               ),
-            ],
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-        ],
+            ),
+          ],
+        ),
       ),
     );
   }

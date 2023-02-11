@@ -17,6 +17,7 @@ class MyApp extends StatelessWidget {
   // $ flutter pub add fluttertoast
   // $ flutter pub add audio_video_progress_bar
   // $ flutter pub add provider
+  // $ flutter pub add get
   @override
   Widget build(BuildContext context) {
     Future<SharedPreferences> initPrefs() async {

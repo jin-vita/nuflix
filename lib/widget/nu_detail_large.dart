@@ -15,14 +15,9 @@ class NuDetailLarge extends StatelessWidget {
     Data data = Provider.of(context);
     return Column(
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            NuThumbCard(
-              program: data.program,
-              height: 300,
-            ),
-          ],
+        NuThumbCard(
+          program: data.program,
+          height: 400,
         ),
         const SizedBox(
           height: 20,
