@@ -20,7 +20,7 @@ class HomeScreen extends StatelessWidget {
       ),
       body: WillPopScope(
         onWillPop: () {
-          return isHeart ? Future.value(true) : exit2(context);
+          return isHeart ? Future.value(true) : exit(context);
         },
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -44,7 +44,7 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Future<bool> exit2(BuildContext context) async {
+  Future<bool> exit(BuildContext context) async {
     return await showDialog(
         context: context,
         builder: (BuildContext context) {
