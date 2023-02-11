@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:nuflix/model/episode_model.dart';
-import 'package:nuflix/screen/heart_screen.dart';
+import 'package:nuflix/screen/home_screen.dart';
 import 'package:nuflix/widget/nu_program.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -123,10 +123,8 @@ class NuHomeLarge extends StatelessWidget {
                               : Navigator.push(
                                   context,
                                   CupertinoPageRoute(
-                                    builder: (context) => HeartScreen(
-                                      programs: data.programs,
-                                      prefs: data.prefs,
-                                    ),
+                                    builder: (context) =>
+                                        const HomeScreen(isHeart: true),
                                     fullscreenDialog: true,
                                   ),
                                 );

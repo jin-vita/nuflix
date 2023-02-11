@@ -6,15 +6,17 @@ import '../widget/nu_home_large.dart';
 import '../widget/nu_home_small.dart';
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+  const HomeScreen({super.key, this.isHeart = false});
+
+  final bool isHeart;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: const NuAppBar(
-        hasIcon: false,
-        title: '누 플 릭 스',
+      appBar: NuAppBar(
+        hasIcon: isHeart ? true : false,
+        title: isHeart ? '대탈출 즐겨찾기' : '누 플 릭 스',
       ),
       body: WillPopScope(
         onWillPop: () {
@@ -32,12 +34,8 @@ class HomeScreen extends StatelessWidget {
                   },
                 ),
                 child: MediaQuery.of(context).size.width > 960
-                    ? const NuHomeLarge(
-                        isHeart: false,
-                      )
-                    : const NuHomeSmall(
-                        isHeart: false,
-                      ),
+                    ? NuHomeLarge(isHeart: isHeart)
+                    : NuHomeSmall(isHeart: isHeart),
               ),
             ),
           ],

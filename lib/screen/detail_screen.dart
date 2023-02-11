@@ -17,7 +17,6 @@ class DetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('selected program : ${program.title}');
     Data data = Provider.of(context);
     data.setProgram(program: program);
     data.setDetail(id: program.id);

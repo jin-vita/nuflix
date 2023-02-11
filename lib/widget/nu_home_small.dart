@@ -2,12 +2,12 @@ import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:nuflix/screen/home_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../data.dart';
 import '../model/episode_model.dart';
 import '../model/program_model.dart';
-import '../screen/heart_screen.dart';
 import 'nu_episode.dart';
 import 'nu_program.dart';
 
@@ -121,10 +121,8 @@ class NuHomeSmall extends StatelessWidget {
                         : Navigator.push(
                             context,
                             CupertinoPageRoute(
-                              builder: (context) => HeartScreen(
-                                programs: data.programs,
-                                prefs: data.prefs,
-                              ),
+                              builder: (context) =>
+                                  const HomeScreen(isHeart: true),
                               fullscreenDialog: true,
                             ),
                           );
