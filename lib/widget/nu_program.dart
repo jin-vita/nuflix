@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:provider/provider.dart';
+import '../data.dart';
 import '../model/program_model.dart';
 import '../screen/detail_screen.dart';
 import 'nu_thumb_card.dart';
@@ -8,34 +9,35 @@ class NuProgram extends StatelessWidget {
   const NuProgram({
     super.key,
     required this.program,
-    required this.height,
-    required this.prefs,
   });
 
   final ProgramModel program;
-  final double height;
-  final SharedPreferences prefs;
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        Navigator.push(
-          context,
-          CupertinoPageRoute(
-            builder: (context) => DetailScreen(
-              program: program,
-              prefs: prefs,
-            ),
-            fullscreenDialog: true,
+    Data data = Provider.of(context);
+    Future<void> goDetailScreen(context) async {
+      await Navigator.push(
+        context,
+        CupertinoPageRoute(
+          builder: (context) => DetailScreen(
+            program: program,
           ),
-        );
+          fullscreenDialog: true,
+        ),
+      );
+      data.applyData();
+    }
+
+    return GestureDetector(
+      onTap: () async {
+        await goDetailScreen(context);
       },
       child: Column(
         children: [
           NuThumbCard(
             program: program,
-            height: height,
+            height: 300,
           ),
           const SizedBox(
             height: 10,

@@ -4,12 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:nuflix/model/episode_model.dart';
 import 'package:nuflix/screen/heart_screen.dart';
+import 'package:nuflix/widget/nu_program.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../data.dart';
 import '../model/program_model.dart';
-import '../screen/detail_screen.dart';
 import 'nu_episode.dart';
-import 'nu_thumb_card.dart';
 
 class NuHomeLarge extends StatelessWidget {
   const NuHomeLarge({
@@ -22,21 +22,6 @@ class NuHomeLarge extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Data data = Provider.of(context);
-
-    Future<void> goDetailScreen(
-        BuildContext context, ProgramModel program) async {
-      await Navigator.push(
-        context,
-        CupertinoPageRoute(
-          builder: (context) => DetailScreen(
-            program: program,
-            prefs: data.prefs,
-          ),
-          fullscreenDialog: true,
-        ),
-      );
-      data.applyData();
-    }
 
     List<ProgramModel> myPrograms = [];
     for (var program in data.programs) {
@@ -62,28 +47,7 @@ class NuHomeLarge extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       for (var program in isHeart ? myPrograms : data.programs)
-                        GestureDetector(
-                          onTap: () async {
-                            await goDetailScreen(context, program);
-                          },
-                          child: Column(
-                            children: [
-                              NuThumbCard(
-                                program: program,
-                                height: 300,
-                              ),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              Text(
-                                program.title,
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
+                        NuProgram(program: program),
                     ],
                   ),
             const SizedBox(
@@ -187,12 +151,104 @@ class NuHomeLarge extends StatelessWidget {
                     ],
                   ),
                 ),
-                const SizedBox(),
+                Column(
+                  children: [
+                    const Text(
+                      '영상이 안보일때 클릭',
+                      style: TextStyle(
+                        fontSize: 23,
+                        color: Colors.green,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        showUrlDialog(context, data.prefs);
+                      },
+                      icon: Transform.scale(
+                        scale: 1.5,
+                        child: Icon(
+                          Icons.network_check_rounded,
+                          shadows: [
+                            BoxShadow(
+                              blurRadius: 15,
+                              offset: const Offset(10, 10),
+                              color: Colors.black.withOpacity(0.3),
+                            ),
+                          ],
+                          color: Colors.green,
+                        ),
+                      ),
+                      iconSize: 100,
+                    ),
+                  ],
+                ),
                 const SizedBox(),
               ],
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Future<dynamic> showUrlDialog(BuildContext context, SharedPreferences prefs) {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+        backgroundColor: Colors.white,
+        title: const Center(
+          child: Text(
+            '업데이트 할까요?',
+            style: TextStyle(
+              color: Colors.green,
+            ),
+          ),
+        ),
+        actions: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              TextButton(
+                onPressed: () {
+                  prefs.setInt(
+                    'urlNumber',
+                    prefs.getInt('urlNumber')! + 1,
+                  );
+                  Navigator.pop(context);
+                  Fluttertoast.showToast(msg: '사이트 주소가 업데이트 되었습니다.');
+                },
+                child: const Text(
+                  '업데이트',
+                  style: TextStyle(
+                    color: Colors.green,
+                  ),
+                ),
+              ),
+              TextButton(
+                onPressed: () {
+                  prefs.setInt(
+                    'urlNumber',
+                    prefs.getInt('urlNumber')! - 1,
+                  );
+                  Navigator.pop(context);
+                  Fluttertoast.showToast(msg: '사이트 주소를 이전으로 돌렸습니다.');
+                },
+                child: const Text(
+                  '되돌리기',
+                  style: TextStyle(
+                    color: Colors.green,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }

@@ -1,32 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-import '../model/detail_model.dart';
-import '../model/episode_model.dart';
-import '../model/program_model.dart';
+import '../data.dart';
 import 'nu_episode.dart';
 import 'nu_thumb_card.dart';
 
 class NuDetailSmall extends StatelessWidget {
   const NuDetailSmall({
     super.key,
-    required this.program,
-    required this.detail,
-    required this.episodes,
   });
-
-  final ProgramModel program;
-  final DetailModel detail;
-  final List<EpisodeModel> episodes;
 
   @override
   Widget build(BuildContext context) {
+    Data data = Provider.of(context);
     return Column(
       children: [
         Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             NuThumbCard(
-              program: program,
+              program: data.program,
               height: 130,
             ),
             const SizedBox(
@@ -36,12 +29,12 @@ class NuDetailSmall extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('${detail.birth}  |  ${detail.genre}'),
+                  Text('${data.detail.birth}  |  ${data.detail.genre}'),
                   const SizedBox(
                     height: 10,
                   ),
                   Text(
-                    detail.about,
+                    data.detail.about,
                     style: const TextStyle(
                       fontSize: 20,
                     ),
@@ -62,7 +55,7 @@ class NuDetailSmall extends StatelessWidget {
                 children: [
                   for (int i = 0; i < 6; i++)
                     NuEpisode(
-                      episode: episodes[i],
+                      episode: data.episodes[i],
                     ),
                 ],
               ),
@@ -73,9 +66,9 @@ class NuDetailSmall extends StatelessWidget {
             Flexible(
               child: Column(
                 children: [
-                  for (int i = 6; i < episodes.length; i++)
+                  for (int i = 6; i < data.episodes.length; i++)
                     NuEpisode(
-                      episode: episodes[i],
+                      episode: data.episodes[i],
                     ),
                 ],
               ),

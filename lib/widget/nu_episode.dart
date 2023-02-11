@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:nuflix/model/episode_model.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class NuEpisode extends StatefulWidget {
+import '../data.dart';
+
+class NuEpisode extends StatelessWidget {
   const NuEpisode({
     super.key,
     required this.episode,
@@ -12,22 +14,16 @@ class NuEpisode extends StatefulWidget {
   final EpisodeModel episode;
 
   @override
-  State<NuEpisode> createState() => _NuEpisodeState();
-}
-
-class _NuEpisodeState extends State<NuEpisode> {
-  onButtonTap() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString('id', widget.episode.id);
-    await prefs.setString('title', widget.episode.title);
-    final url =
-        Uri.parse('https://noonoo27.tv/old_entertainment/${widget.episode.id}');
-    await launchUrl(url);
-    setState(() {});
-  }
-
-  @override
   Widget build(BuildContext context) {
+    Data data = Provider.of(context);
+    onButtonTap() async {
+      await data.prefs.setString('id', episode.id);
+      await data.prefs.setString('title', episode.title);
+      final url = Uri.parse(
+          'https://noonoo${data.prefs.getInt('urlNumber')}.tv/old_entertainment/${episode.id}');
+      await launchUrl(url);
+    }
+
     return GestureDetector(
       onTap: onButtonTap,
       child: Container(
@@ -58,7 +54,7 @@ class _NuEpisodeState extends State<NuEpisode> {
             children: [
               Expanded(
                 child: Text(
-                  widget.episode.title,
+                  episode.title,
                   style: const TextStyle(
                     color: Colors.green,
                     fontSize: 17,

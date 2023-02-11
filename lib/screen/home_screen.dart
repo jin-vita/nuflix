@@ -55,7 +55,7 @@ class HomeScreen extends StatelessWidget {
         builder: (BuildContext context) {
           return AlertDialog(
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(30),
+              borderRadius: BorderRadius.circular(20),
             ),
             backgroundColor: Colors.white,
             title: const Center(

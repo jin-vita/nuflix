@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'data.dart';
-import 'model/program_model.dart';
 import 'screen/home_screen.dart';
 
 void main() {
@@ -22,8 +21,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     Future<SharedPreferences> initPrefs() async {
       SharedPreferences prefs = await SharedPreferences.getInstance();
+      // 설정 정보 초기화
       if (prefs.getStringList('like') == null) {
         await prefs.setStringList('like', []);
+      }
+      if (prefs.getInt('urlNumber') == null) {
+        await prefs.setInt('urlNumber', 27);
       }
       return prefs;
     }
@@ -37,28 +40,6 @@ class MyApp extends StatelessWidget {
               ChangeNotifierProvider(
                 create: (context) => Data(
                   prefs: snapshot.data!,
-                  programs: [
-                    ProgramModel(
-                      title: '대탈출 시즌1',
-                      thumb: 'big1.jpg',
-                      id: 'eoxkfcnf1',
-                    ),
-                    ProgramModel(
-                      title: '대탈출 시즌2',
-                      thumb: 'big2.jpg',
-                      id: 'eoxkfcnf2',
-                    ),
-                    ProgramModel(
-                      title: '대탈출 시즌3',
-                      thumb: 'big3.jpg',
-                      id: 'eoxkfcnf3',
-                    ),
-                    ProgramModel(
-                      title: '대탈출 시즌4',
-                      thumb: 'big4.jpg',
-                      id: 'eoxkfcnf4',
-                    ),
-                  ],
                 ),
               ),
             ],

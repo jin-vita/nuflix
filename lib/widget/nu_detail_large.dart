@@ -1,32 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-import '../model/detail_model.dart';
-import '../model/episode_model.dart';
-import '../model/program_model.dart';
+import '../data.dart';
 import 'nu_episode.dart';
 import 'nu_thumb_card.dart';
 
 class NuDetailLarge extends StatelessWidget {
   const NuDetailLarge({
     super.key,
-    required this.program,
-    required this.detail,
-    required this.episodes,
   });
-
-  final ProgramModel program;
-  final DetailModel detail;
-  final List<EpisodeModel> episodes;
 
   @override
   Widget build(BuildContext context) {
+    Data data = Provider.of(context);
     return Column(
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             NuThumbCard(
-              program: program,
+              program: data.program,
               height: 300,
             ),
           ],
@@ -38,7 +31,7 @@ class NuDetailLarge extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              '${detail.birth}  |  ${detail.genre}',
+              '${data.detail.birth}  |  ${data.detail.genre}',
               style: const TextStyle(
                 fontSize: 11,
               ),
@@ -47,7 +40,7 @@ class NuDetailLarge extends StatelessWidget {
               height: 5,
             ),
             Text(
-              detail.about,
+              data.detail.about,
               style: const TextStyle(
                 fontSize: 12,
               ),
@@ -59,7 +52,7 @@ class NuDetailLarge extends StatelessWidget {
         ),
         Column(
           children: [
-            for (var episode in episodes)
+            for (var episode in data.episodes)
               NuEpisode(
                 episode: episode,
               ),
