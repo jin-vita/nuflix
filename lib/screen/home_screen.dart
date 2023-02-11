@@ -20,7 +20,7 @@ class HomeScreen extends StatelessWidget {
       ),
       body: WillPopScope(
         onWillPop: () {
-          return exit2(context);
+          return isHeart ? Future.value(true) : exit2(context);
         },
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
