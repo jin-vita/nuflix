@@ -1,13 +1,13 @@
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:nuflix/screen/home_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../data.dart';
 import '../model/episode_model.dart';
 import '../model/program_model.dart';
+import '../util/util.dart';
 import 'nu_episode.dart';
 import 'nu_program.dart';
 
@@ -124,8 +124,8 @@ class NuHomeSmall extends StatelessWidget {
                         IconButton(
                           onPressed: () {
                             data.prefs.getStringList('like')!.isEmpty
-                                ? Fluttertoast.showToast(
-                                    msg: '즐겨찾기한 프로그램이 없습니다.')
+                                ? Util.showSnackBar(
+                                    message: '즐겨찾기한 프로그램이 없습니다.')
                                 : Navigator.push(
                                     context,
                                     CupertinoPageRoute(
@@ -211,7 +211,7 @@ class NuHomeSmall extends StatelessWidget {
                     prefs.getInt('urlNumber')! + 1,
                   );
                   Navigator.pop(context);
-                  Fluttertoast.showToast(msg: '사이트 주소가 업데이트 되었습니다.');
+                  Util.showSnackBar(message: '사이트 주소를 이전으로 돌렸습니다.');
                 },
                 child: const Text(
                   '업데이트',
@@ -227,7 +227,7 @@ class NuHomeSmall extends StatelessWidget {
                     prefs.getInt('urlNumber')! - 1,
                   );
                   Navigator.pop(context);
-                  Fluttertoast.showToast(msg: '사이트 주소를 이전으로 돌렸습니다.');
+                  Util.showSnackBar(message: '사이트 주소를 이전으로 돌렸습니다.');
                 },
                 child: const Text(
                   '되돌리기',

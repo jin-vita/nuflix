@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class Util {
-  static void showSnackBar({title, message}) {
+  static void showSnackBar({title = '알림', message, seconds = 2}) {
     Get.snackbar(
       title,
       message,
       snackPosition: SnackPosition.BOTTOM,
-      duration: const Duration(seconds: 1),
+      duration: Duration(seconds: seconds),
     );
   }
 
