@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:nuflix/model/episode_model.dart';
-import 'package:nuflix/util/util.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -20,10 +20,10 @@ class NuEpisode extends StatelessWidget {
     onButtonTap() async {
       if (data.prefs.getString('id') == episode.id) {
         final time = Duration(milliseconds: data.prefs.getInt('progress') ?? 0);
-        Util.showSnackBar(message: '이전 종료 시점 : ${'$time'.split('.').first}');
+        Fluttertoast.showToast(msg: '이전 종료 시점 : ${'$time'.split('.').first}');
       } else {
         data.prefs.setInt('progress', 0);
-        Util.showSnackBar(message: '새로운 영상을 시작합니다.');
+        Fluttertoast.showToast(msg: '새로운 영상을 시작합니다.');
       }
       await data.prefs.setString('id', episode.id);
       await data.prefs.setString('title', episode.title);
