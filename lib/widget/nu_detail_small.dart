@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:get/get.dart';
 
-import '../data.dart';
+import '../data/app_data.dart';
 import 'nu_episode.dart';
 import 'nu_thumb_card.dart';
 
@@ -12,7 +12,7 @@ class NuDetailSmall extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Data data = Provider.of(context);
+    AppData data = Get.find();
     return Column(
       children: [
         Row(

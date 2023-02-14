@@ -1,13 +1,14 @@
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:nuflix/data/app_data.dart';
 import 'package:nuflix/model/episode_model.dart';
 import 'package:nuflix/screen/home_screen.dart';
 import 'package:nuflix/util/util.dart';
 import 'package:nuflix/widget/nu_program.dart';
-import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../data.dart';
+
 import '../model/program_model.dart';
 import 'nu_episode.dart';
 
@@ -21,7 +22,7 @@ class NuHomeLarge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Data data = Provider.of(context);
+    AppData data = Get.find();
 
     List<ProgramModel> myPrograms = [];
     for (var program in data.programs) {

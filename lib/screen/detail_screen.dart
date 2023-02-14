@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:get/get.dart';
 
-import '../data.dart';
+import '../data/app_data.dart';
 import '../model/program_model.dart';
 import '../widget/nu_appbar.dart';
 import '../widget/nu_detail_large.dart';
@@ -17,7 +17,7 @@ class DetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Data data = Provider.of(context);
+    AppData data = Get.find();
     data.setProgram(program: program);
     data.setDetail(id: program.id);
 
@@ -31,7 +31,7 @@ class DetailScreen extends StatelessWidget {
         }
         await data.prefs.setStringList('like', liked);
       }
-      data.applyData();
+      data.update();
     }
 
     return Scaffold(

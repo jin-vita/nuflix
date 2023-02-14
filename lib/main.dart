@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:nuflix/data/app_data.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 import 'data.dart';
 import 'screen/home_screen.dart';
 
 void main() {
+  initController;
   runApp(const MyApp());
 }
+
+final initController = Get.put(AppData());
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -21,6 +26,8 @@ class MyApp extends StatelessWidget {
   // $ flutter pub add get
   @override
   Widget build(BuildContext context) {
+    initGetPrefs();
+
     Future<SharedPreferences> initPrefs() async {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       // 설정 정보 초기화
@@ -55,5 +62,18 @@ class MyApp extends StatelessWidget {
         );
       },
     );
+  }
+
+  void initGetPrefs() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    AppData data = Get.find();
+    data.prefs = prefs;
+    // 설정 정보 초기화
+    if (prefs.getStringList('like') == null) {
+      await prefs.setStringList('like', []);
+    }
+    if (prefs.getInt('urlNumber') == null) {
+      await prefs.setInt('urlNumber', 27);
+    }
   }
 }

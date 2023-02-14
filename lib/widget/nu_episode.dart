@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
 import 'package:nuflix/model/episode_model.dart';
-import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../data.dart';
+import '../data/app_data.dart';
 
 class NuEpisode extends StatelessWidget {
   const NuEpisode({
@@ -16,7 +16,7 @@ class NuEpisode extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Data data = Provider.of(context);
+    AppData data = Get.find();
     onButtonTap() async {
       if (data.prefs.getString('id') == episode.id) {
         final time = Duration(milliseconds: data.prefs.getInt('progress') ?? 0);

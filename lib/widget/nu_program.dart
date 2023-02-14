@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
-import 'package:provider/provider.dart';
-import '../data.dart';
+import 'package:get/get.dart';
+
+import '../data/app_data.dart';
 import '../model/program_model.dart';
 import '../screen/detail_screen.dart';
 import 'nu_thumb_card.dart';
@@ -15,7 +16,7 @@ class NuProgram extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Data data = Provider.of(context);
+    AppData data = Get.find();
     Future<void> goDetailScreen(context) async {
       await Navigator.push(
         context,
@@ -26,7 +27,7 @@ class NuProgram extends StatelessWidget {
           fullscreenDialog: true,
         ),
       );
-      data.applyData();
+      data.update();
     }
 
     return GestureDetector(

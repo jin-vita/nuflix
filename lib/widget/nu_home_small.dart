@@ -1,10 +1,11 @@
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:nuflix/screen/home_screen.dart';
-import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../data.dart';
+
+import '../data/app_data.dart';
 import '../model/episode_model.dart';
 import '../model/program_model.dart';
 import '../util/util.dart';
@@ -21,7 +22,7 @@ class NuHomeSmall extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Data data = Provider.of(context);
+    AppData data = Get.find();
 
     List<ProgramModel> myPrograms = [];
     for (var program in data.programs) {
