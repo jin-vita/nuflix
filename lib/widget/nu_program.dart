@@ -18,7 +18,7 @@ class NuProgram extends StatelessWidget {
   Widget build(BuildContext context) {
     AppData data = Get.find();
     Future<void> goDetailScreen(context) async {
-      await Navigator.push(
+      final result = await Navigator.push(
         context,
         CupertinoPageRoute(
           builder: (context) => DetailScreen(
@@ -27,6 +27,7 @@ class NuProgram extends StatelessWidget {
           fullscreenDialog: true,
         ),
       );
+      print('돌아옴 result : $result, program : ${program.title}');
       data.update();
     }
 

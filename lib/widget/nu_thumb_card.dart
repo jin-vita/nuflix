@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:nuflix/model/program_model.dart';
+
+import '../model/program_model.dart';
 
 class NuThumbCard extends StatelessWidget {
   const NuThumbCard({

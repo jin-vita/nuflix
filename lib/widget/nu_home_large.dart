@@ -2,15 +2,13 @@ import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:nuflix/data/app_data.dart';
-import 'package:nuflix/model/episode_model.dart';
-import 'package:nuflix/screen/home_screen.dart';
-import 'package:nuflix/util/util.dart';
-import 'package:nuflix/widget/nu_program.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../model/program_model.dart';
+import '../data/app_data.dart';
+import '../screen/home_screen.dart';
+import '../util/util.dart';
 import 'nu_episode.dart';
+import 'nu_program.dart';
 
 class NuHomeLarge extends StatelessWidget {
   const NuHomeLarge({
@@ -24,13 +22,6 @@ class NuHomeLarge extends StatelessWidget {
   Widget build(BuildContext context) {
     AppData data = Get.find();
 
-    List<ProgramModel> myPrograms = [];
-    for (var program in data.programs) {
-      if (data.prefs.getStringList('like')!.contains(program.id)) {
-        myPrograms.add(program);
-      }
-    }
-
     return SingleChildScrollView(
       child: Container(
         padding: const EdgeInsets.only(
@@ -38,19 +29,27 @@ class NuHomeLarge extends StatelessWidget {
         ),
         child: Column(
           children: [
-            isHeart && myPrograms.isEmpty
-                ? Container(
-                    alignment: Alignment.center,
-                    height: 300,
-                    child: const Text('즐겨찾기한 프로그램이 없습니다.'),
-                  )
-                : Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      for (var program in isHeart ? myPrograms : data.programs)
-                        NuProgram(program: program),
-                    ],
-                  ),
+            GetBuilder<AppData>(
+              builder: (_) {
+                return SizedBox(
+                  child: isHeart && data.heartPrograms.value.isEmpty
+                      ? Container(
+                          alignment: Alignment.center,
+                          height: 300,
+                          child: const Text('즐겨찾기한 프로그램이 없습니다.'),
+                        )
+                      : Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            for (var program in isHeart
+                                ? data.heartPrograms.value
+                                : data.programs)
+                              NuProgram(program: program),
+                          ],
+                        ),
+                );
+              },
+            ),
             const SizedBox(
               height: 70,
             ),
@@ -71,16 +70,15 @@ class NuHomeLarge extends StatelessWidget {
                     const SizedBox(
                       height: 30,
                     ),
-                    SizedBox(
-                      width: 350,
-                      child: data.prefs.getString('id') == null
-                          ? const Center(child: Text('최근 본 영상이 없습니다.'))
-                          : NuEpisode(
-                              episode: EpisodeModel(
-                                title: data.prefs.getString('title')!,
-                                id: data.prefs.getString('id')!,
+                    Obx(
+                      () => SizedBox(
+                        width: 350,
+                        child: data.episode.value.id == ''
+                            ? const Center(child: Text('최근 본 영상이 없습니다.'))
+                            : NuEpisode(
+                                episode: data.episode.value,
                               ),
-                            ),
+                      ),
                     ),
                     const SizedBox(
                       height: 20,

@@ -18,34 +18,44 @@ class DetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     AppData data = Get.find();
-    data.setProgram(program: program);
-    data.setDetail(id: program.id);
+    data.program = program;
+    data.setDetail(id: data.program.id);
+    data.clicked.value =
+        data.prefs.getStringList('like')!.contains(data.program.id)
+            ? true
+            : false;
 
     onHeartTap() async {
-      final liked = data.prefs.getStringList('like');
-      if (liked != null) {
-        if (liked.contains(program.id)) {
-          liked.remove(program.id);
-        } else {
-          liked.add(program.id);
-        }
-        await data.prefs.setStringList('like', liked);
+      final liked = data.prefs.getStringList('like')!;
+      if (liked.contains(data.program.id)) {
+        liked.remove(data.program.id);
+        data.clicked.value = false;
+      } else {
+        liked.add(data.program.id);
+        data.clicked.value = true;
       }
-      data.update();
+      await data.prefs.setStringList('like', liked);
+
+      data.heartPrograms.value.clear();
+      for (var program in data.programs) {
+        if (data.prefs.getStringList('like')!.contains(program.id)) {
+          data.heartPrograms.value.add(program);
+        }
+      }
     }
 
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: NuAppBar(
-        title: program.title,
+        title: data.program.title,
         hasIcon: true,
-        action: [
-          IconButton(
-            onPressed: onHeartTap,
-            icon: Icon(
-              data.prefs.getStringList('like')!.contains(program.id)
-                  ? Icons.favorite
-                  : Icons.favorite_outline,
+        actions: [
+          Obx(
+            () => IconButton(
+              onPressed: onHeartTap,
+              icon: Icon(
+                data.clicked.value ? Icons.favorite : Icons.favorite_outline,
+              ),
             ),
           ),
         ],

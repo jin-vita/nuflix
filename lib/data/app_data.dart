@@ -1,11 +1,29 @@
 import 'package:get/get.dart';
-import 'package:nuflix/model/detail_model.dart';
-import 'package:nuflix/model/episode_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../model/detail_model.dart';
+import '../model/episode_model.dart';
 import '../model/program_model.dart';
 
 class AppData extends GetxController {
+  late SharedPreferences prefs;
+
+  // 선택한 프로그램
+  late ProgramModel program;
+
+  // 선택한 프로그램의 상세정보
+  late DetailModel detail;
+
+  // 선택한 프로그램의 회차들
+  late List<EpisodeModel> episodes;
+
+  // 선택한 회차
+  final episode = EpisodeModel(title: '', id: '').obs;
+  final clicked = RxBool(false);
+
+  // 즐겨찾기 프로그램들
+  final heartPrograms = RxList<ProgramModel>([]).obs;
+
   List<ProgramModel> programs = [
     ProgramModel(
       title: '대탈출 시즌1',
@@ -28,18 +46,6 @@ class AppData extends GetxController {
       id: 'eoxkfcnf4',
     ),
   ];
-
-  late List<EpisodeModel> episodes;
-  late DetailModel detail;
-  late ProgramModel program;
-
-  late SharedPreferences prefs;
-
-  AppData();
-
-  void setProgram({program}) {
-    this.program = program;
-  }
 
   void setDetail({id}) {
     const String explain = '한 번 갇히면, 빠져나올 수 없다?!'

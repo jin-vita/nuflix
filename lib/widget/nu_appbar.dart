@@ -4,10 +4,11 @@ class NuAppBar extends StatelessWidget with PreferredSizeWidget {
   const NuAppBar({
     super.key,
     required this.title,
-    this.action,
+    this.actions,
     required this.hasIcon,
   });
-  final List<Widget>? action;
+
+  final List<Widget>? actions;
   final String title;
   final bool hasIcon;
 
@@ -18,7 +19,7 @@ class NuAppBar extends StatelessWidget with PreferredSizeWidget {
       elevation: 3,
       backgroundColor: Colors.white,
       foregroundColor: Colors.green,
-      actions: action,
+      actions: actions,
       centerTitle: true,
       title: Text(
         title,

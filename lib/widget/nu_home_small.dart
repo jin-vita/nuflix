@@ -2,12 +2,12 @@ import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:nuflix/screen/home_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../data/app_data.dart';
 import '../model/episode_model.dart';
 import '../model/program_model.dart';
+import '../screen/home_screen.dart';
 import '../util/util.dart';
 import 'nu_episode.dart';
 import 'nu_program.dart';

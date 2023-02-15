@@ -1,7 +1,8 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:nuflix/widget/nu_appbar.dart';
+
+import '../widget/nu_appbar.dart';
 import '../widget/nu_home_large.dart';
 import '../widget/nu_home_small.dart';
 
