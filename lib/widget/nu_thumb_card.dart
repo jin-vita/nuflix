@@ -29,7 +29,7 @@ class NuThumbCard extends StatelessWidget {
           ],
         ),
         height: height,
-        child: Image.asset('assets/images/${program.thumb}'),
+        child: Image.asset('assets/images/program/${program.thumb}'),
       ),
     );
   }

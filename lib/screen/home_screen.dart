@@ -1,6 +1,8 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:nuflix/screen/login_screen.dart';
 
 import '../widget/nu_appbar.dart';
 import '../widget/nu_home_large.dart';
@@ -16,7 +18,8 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: NuAppBar(
-        hasIcon: isHeart ? true : false,
+        hasIcon: true,
+        // isHeart ? true : false,
         title: isHeart ? '대탈출 즐겨찾기' : '누 플 릭 스',
       ),
       body: WillPopScope(
@@ -45,55 +48,57 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Future<bool> exit(BuildContext context) async {
-    return await showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20),
+  Future<bool> exit(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          backgroundColor: Colors.white,
+          title: const Center(
+            child: Text(
+              '로그아웃 할까요?',
+              style: TextStyle(
+                color: Colors.green,
+              ),
             ),
-            backgroundColor: Colors.white,
-            title: const Center(
-              child: Text(
-                '그만볼래요?',
-                style: TextStyle(
-                  color: Colors.green,
+          ),
+          actions: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                TextButton(
+                  onPressed: () {
+                    Get.offAll(const LoginScreen());
+                  },
+                  child: const Text(
+                    '네',
+                    style: TextStyle(
+                      color: Colors.green,
+                    ),
+                  ),
                 ),
-              ),
+                TextButton(
+                  onPressed: () {
+                    //onWillpop에 false 전달되어 앱이 종료되지 않는다.
+                    // Navigator.pop(context, false);
+                    Get.back();
+                  },
+                  child: const Text(
+                    '아니요',
+                    style: TextStyle(
+                      color: Colors.green,
+                    ),
+                  ),
+                ),
+              ],
             ),
-            actions: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  TextButton(
-                    onPressed: () {
-                      //onWillpop에 true가 전달되어 앱이 종료 된다.
-                      Navigator.pop(context, true);
-                    },
-                    child: const Text(
-                      '네',
-                      style: TextStyle(
-                        color: Colors.green,
-                      ),
-                    ),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      //onWillpop에 false 전달되어 앱이 종료되지 않는다.
-                      Navigator.pop(context, false);
-                    },
-                    child: const Text(
-                      '아니요',
-                      style: TextStyle(
-                        color: Colors.green,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          );
-        });
+          ],
+        );
+      },
+    );
+    return Future(() => false);
   }
 }

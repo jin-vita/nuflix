@@ -27,22 +27,22 @@ class AppData extends GetxController {
   List<ProgramModel> programs = [
     ProgramModel(
       title: '대탈출 시즌1',
-      thumb: 'big1.jpg',
+      thumb: 'big_escape_1.jpg',
       id: 'eoxkfcnf1',
     ),
     ProgramModel(
       title: '대탈출 시즌2',
-      thumb: 'big2.jpg',
+      thumb: 'big_escape_2.jpg',
       id: 'eoxkfcnf2',
     ),
     ProgramModel(
       title: '대탈출 시즌3',
-      thumb: 'big3.jpg',
+      thumb: 'big_escape_3.jpg',
       id: 'eoxkfcnf3',
     ),
     ProgramModel(
       title: '대탈출 시즌4',
-      thumb: 'big4.jpg',
+      thumb: 'big_escape_4.jpg',
       id: 'eoxkfcnf4',
     ),
   ];

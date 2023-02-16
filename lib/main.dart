@@ -20,7 +20,10 @@ final initController = Get.put(AppData());
 // flutter pub add fluttertoast
 // flutter pub add audio_video_progress_bar
 // flutter pub add get
+// flutter pub add dio
 // flutter pub add logger
+// flutter pub add animated_login (login_screen.dart)
+// flutter pub add async (CancelableOperation)
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -33,7 +36,7 @@ class MyApp extends StatelessWidget {
           AppData data = Get.find();
           data.prefs = snapshot.data!;
           return GetMaterialApp(
-            initialRoute: '/home',
+            initialRoute: '/login',
             getPages: [
               GetPage(
                 name: '/login',
@@ -43,7 +46,7 @@ class MyApp extends StatelessWidget {
               GetPage(
                 name: '/home',
                 page: () => const HomeScreen(),
-                transition: Transition.rightToLeft,
+                transition: Transition.circularReveal,
               ),
               GetPage(
                   name: '/heart',
