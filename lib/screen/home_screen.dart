@@ -27,7 +27,7 @@ class HomeScreen extends StatelessWidget {
       ),
       body: WillPopScope(
         onWillPop: () {
-          return isHeart ? Future.value(true) : exit(context);
+          return isHeart ? back(context) : exit(context);
         },
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -49,6 +49,11 @@ class HomeScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future<bool> back(BuildContext context) {
+    Get.find<AppData>().update();
+    return Future.value(true);
   }
 
   Future<bool> exit(BuildContext context) {

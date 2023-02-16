@@ -83,17 +83,21 @@ class NuHomeLarge extends StatelessWidget {
                     ),
                     SizedBox(
                       width: 350,
-                      child: ProgressBar(
-                        thumbColor: Colors.green,
-                        baseBarColor: Colors.green.withOpacity(0.3),
-                        progressBarColor: Colors.green,
-                        progress: Duration(
-                          milliseconds: data.prefs.getInt('progress') ?? 0,
+                      child: Obx(
+                        () => ProgressBar(
+                          thumbColor: Colors.green,
+                          baseBarColor: Colors.green.withOpacity(0.3),
+                          progressBarColor: Colors.green,
+                          progress: Duration(
+                            milliseconds: data.progress.value,
+                          ),
+                          total: const Duration(minutes: 80),
+                          onSeek: (percent) {
+                            data.prefs
+                                .setInt('progress', percent.inMilliseconds);
+                            data.progress = percent.inMilliseconds.obs;
+                          },
                         ),
-                        total: const Duration(minutes: 80),
-                        onSeek: (percent) {
-                          data.prefs.setInt('progress', percent.inMilliseconds);
-                        },
                       ),
                     ),
                   ],

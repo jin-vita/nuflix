@@ -15,19 +15,18 @@ class DetailScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     AppData data = Get.find();
     data.setDetail(id: data.program.id);
-    data.clicked.value =
-        data.prefs.getStringList('like')!.contains(data.program.id)
-            ? true
-            : false;
+    data.liked = data.prefs.getStringList('like')!.contains(data.program.id)
+        ? true.obs
+        : false.obs;
 
     onHeartTap() async {
       final liked = data.prefs.getStringList('like')!;
       if (liked.contains(data.program.id)) {
         liked.remove(data.program.id);
-        data.clicked.value = false;
+        data.liked = false.obs;
       } else {
         liked.add(data.program.id);
-        data.clicked.value = true;
+        data.liked = true.obs;
       }
       await data.prefs.setStringList('like', liked);
 
@@ -49,7 +48,7 @@ class DetailScreen extends StatelessWidget {
             () => IconButton(
               onPressed: onHeartTap,
               icon: Icon(
-                data.clicked.value ? Icons.favorite : Icons.favorite_outline,
+                data.liked.value ? Icons.favorite : Icons.favorite_outline,
               ),
             ),
           ),

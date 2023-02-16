@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
+import 'package:nuflix/model/episode_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'data/app_data.dart';
@@ -35,7 +36,8 @@ class MyApp extends StatelessWidget {
         if (snapshot.hasData) {
           AppData data = Get.find();
           data.prefs = snapshot.data!;
-          log.i('userName : ${data.prefs.getString('userName')}');
+          initData(data);
+
           return GetMaterialApp(
             initialRoute:
                 data.prefs.getString('userName') == '' ? '/login' : '/home',
@@ -83,5 +85,18 @@ class MyApp extends StatelessWidget {
       await prefs.setString('userName', '');
     }
     return prefs;
+  }
+
+  void initData(AppData data) {
+    data.progress = (data.prefs.getInt('progress') ?? 0).obs;
+    data.episode = EpisodeModel(
+            title: data.prefs.getString('title') ?? '',
+            id: data.prefs.getString('id') ?? '')
+        .obs;
+    for (var program in data.programs) {
+      if (data.prefs.getStringList('like')!.contains(program.id)) {
+        data.heartPrograms.value.add(program);
+      }
+    }
   }
 }

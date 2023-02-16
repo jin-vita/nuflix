@@ -18,8 +18,9 @@ class AppData extends GetxController {
   late List<EpisodeModel> episodes;
 
   // 선택한 회차
-  final episode = EpisodeModel(title: '', id: '').obs;
-  final clicked = RxBool(false);
+  late Rx<EpisodeModel> episode;
+  late RxInt progress;
+  late RxBool liked;
 
   // 즐겨찾기 프로그램들
   final heartPrograms = RxList<ProgramModel>([]);
