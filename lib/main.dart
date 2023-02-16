@@ -35,8 +35,10 @@ class MyApp extends StatelessWidget {
         if (snapshot.hasData) {
           AppData data = Get.find();
           data.prefs = snapshot.data!;
+          log.i('userName : ${data.prefs.getString('userName')}');
           return GetMaterialApp(
-            initialRoute: '/login',
+            initialRoute:
+                data.prefs.getString('userName') == '' ? '/login' : '/home',
             getPages: [
               GetPage(
                 name: '/login',
@@ -76,6 +78,9 @@ class MyApp extends StatelessWidget {
     }
     if (prefs.getInt('urlNumber') == null) {
       await prefs.setInt('urlNumber', 27);
+    }
+    if (prefs.getString('userName') == null) {
+      await prefs.setString('userName', '');
     }
     return prefs;
   }

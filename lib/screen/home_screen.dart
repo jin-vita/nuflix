@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:nuflix/data/app_data.dart';
 import 'package:nuflix/screen/login_screen.dart';
 
 import '../widget/nu_appbar.dart';
@@ -20,7 +21,9 @@ class HomeScreen extends StatelessWidget {
       appBar: NuAppBar(
         hasIcon: true,
         // isHeart ? true : false,
-        title: isHeart ? '대탈출 즐겨찾기' : '누 플 릭 스',
+        title: isHeart
+            ? '대탈출 즐겨찾기'
+            : '${Get.find<AppData>().prefs.getString('userName')}님 환영합니다!',
       ),
       body: WillPopScope(
         onWillPop: () {
@@ -71,6 +74,7 @@ class HomeScreen extends StatelessWidget {
               children: [
                 TextButton(
                   onPressed: () {
+                    Get.find<AppData>().prefs.setString('userName', '');
                     Get.offAll(const LoginScreen());
                   },
                   child: const Text(

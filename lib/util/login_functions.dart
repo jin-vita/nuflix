@@ -18,13 +18,18 @@ class LoginFunctions {
 
   /// Login action that will be performed on click to action button in login mode.
   Future<String?> onLogin(LoginData loginData) async {
-    log.d('onLogin : ${loginData.email}');
+    if (loginData.email != 'cuckaqua@gmail.com') {
+      return '등록되지 않은 이메일입니다\n다시 확인해주세요';
+    }
+    if (loginData.password != 'aquacuck1!') {
+      return '비밀번호가 맞지 않습니다\n다시 확인해주세요';
+    }
+    return 'OK|뚜루루껑';
     final dio = Dio();
     dio.options.headers['Content-Type'] =
         'application/x-www-form-urlencoded;charset=UTF-8';
     dio.options.responseType = ResponseType.plain;
-    var url = "http://192.168.43.234:8001/user/list";
-    log.d('onLogin : ${url}');
+    var url = "http://localhost:8001/user/list";
     var response = await dio.request(
       url,
       data: {
@@ -46,7 +51,7 @@ class LoginFunctions {
       return '비밀번호가 맞지 않습니다\n다시 확인해주세요';
     }
     await Future.delayed(const Duration(seconds: 2));
-    return 'OK ${result?.name}';
+    return 'OK|${result?.name}';
   }
 
   /// Sign up action that will be performed on click to action button in sign up mode.
@@ -54,11 +59,12 @@ class LoginFunctions {
     if (signupData.password != signupData.confirmPassword) {
       return '비밀번호가 같지 않습니다\n다시 확인해주세요';
     }
+    return '지금은 계정을 추가로\n생성할 수 없습니다 죄송합니다';
     final dio = Dio();
     dio.options.headers['Content-Type'] =
         'application/x-www-form-urlencoded;charset=UTF-8';
     dio.options.responseType = ResponseType.plain;
-    var url = "http://192.168.43.234:8001/user/insert";
+    var url = "http://localhost:8001/user/insert";
     var response = await dio.request(
       url,
       data: {
@@ -80,7 +86,7 @@ class LoginFunctions {
       return '회원 등록 실패\n다시 확인해주세요';
     }
     await Future.delayed(const Duration(seconds: 2));
-    return 'OK ${signupData.name}';
+    return 'OK|${signupData.name}';
   }
 
   /// Social login callback example.

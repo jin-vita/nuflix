@@ -3,6 +3,7 @@ import 'package:async/async.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:nuflix/data/app_data.dart';
 
 import '../util/dialog_builders.dart';
 import '../util/login_functions.dart';
@@ -39,7 +40,7 @@ class _LoginScreenState extends State<LoginScreen> {
       loginMobileTheme: _mobileTheme,
       loginTexts: _loginTexts,
       emailValidator: ValidatorModel(
-          validatorCallback: (String? email) => 'What an email! $email'),
+          validatorCallback: (String? email) => '이메일 형식에 맞지 않아요! $email'),
       changeLanguageCallback: (LanguageOption? _language) {
         if (_language != null) {
           // DialogBuilder(context).showResultDialog(
@@ -66,8 +67,10 @@ class _LoginScreenState extends State<LoginScreen> {
       if (!res!.startsWith('OK')) {
         DialogBuilder(context).showResultDialog(res);
       } else {
+        final userName = res.split('|')[1];
+        await Get.find<AppData>().prefs.setString('userName', userName);
         Fluttertoast.showToast(
-          msg: '${res.split(' ')[1]}님 좋은 하루 되세요!',
+          msg: '[$userName]님 좋은 하루 되세요!',
           toastLength: Toast.LENGTH_LONG,
         );
         Get.toNamed('/home');
