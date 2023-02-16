@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../data/app_data.dart';
+import '../model/model_program.dart';
 import '../widget/nu_appbar.dart';
 import '../widget/nu_detail_large.dart';
 import '../widget/nu_detail_small.dart';
@@ -15,28 +16,28 @@ class DetailScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     AppData data = Get.find();
     data.setDetail(id: data.program.id);
-    data.clicked.value =
-        data.prefs.getStringList('like')!.contains(data.program.id)
-            ? true
-            : false;
+    data.liked = data.prefs.getStringList('like')!.contains(data.program.id)
+        ? RxBool(true)
+        : RxBool(false);
 
     onHeartTap() async {
       final liked = data.prefs.getStringList('like')!;
       if (liked.contains(data.program.id)) {
         liked.remove(data.program.id);
-        data.clicked.value = false;
+        data.liked.value = false;
       } else {
         liked.add(data.program.id);
-        data.clicked.value = true;
+        data.liked.value = true;
       }
       await data.prefs.setStringList('like', liked);
 
-      data.heartPrograms.value.clear();
+      List<ProgramModel> list = [];
       for (var program in data.programs) {
         if (data.prefs.getStringList('like')!.contains(program.id)) {
-          data.heartPrograms.value.add(program);
+          list.add(program);
         }
       }
+      data.heartPrograms = RxList(list);
     }
 
     return Scaffold(
@@ -49,7 +50,7 @@ class DetailScreen extends StatelessWidget {
             () => IconButton(
               onPressed: onHeartTap,
               icon: Icon(
-                data.clicked.value ? Icons.favorite : Icons.favorite_outline,
+                data.liked.value ? Icons.favorite : Icons.favorite_outline,
               ),
             ),
           ),
@@ -66,8 +67,8 @@ class DetailScreen extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 30),
             child: MediaQuery.of(context).size.width > 960
-                ? const NuDetailSmall()
-                : const NuDetailLarge(),
+                ? const NuDetailLarge()
+                : const NuDetailSmall(),
           ),
         ),
       ),

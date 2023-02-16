@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../data/app_data.dart';
-import '../model/episode_model.dart';
+import '../model/model_episode.dart';
 
 class NuEpisode extends StatelessWidget {
   const NuEpisode({
@@ -42,7 +42,7 @@ class NuEpisode extends StatelessWidget {
         decoration: BoxDecoration(
           color: Colors.white,
           border: Border.all(
-            color: Colors.green,
+            color: Colors.cyan,
           ),
           borderRadius: BorderRadius.circular(20),
           boxShadow: [
@@ -65,14 +65,14 @@ class NuEpisode extends StatelessWidget {
                 child: Text(
                   episode.title,
                   style: const TextStyle(
-                    color: Colors.green,
+                    color: Colors.cyan,
                     fontSize: 17,
                   ),
                 ),
               ),
               const Icon(
                 Icons.chevron_right_rounded,
-                color: Colors.green,
+                color: Colors.cyan,
               ),
             ],
           ),

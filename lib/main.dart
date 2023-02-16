@@ -4,17 +4,12 @@ import 'package:logger/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'data/app_data.dart';
-import 'screen/detail_screen.dart';
-import 'screen/home_screen.dart';
-import 'screen/login_screen.dart';
-
-void main() {
-  initController;
-  runApp(const MyApp());
-}
-
-final log = Logger();
-final initController = Get.put(AppData());
+import 'model/model_episode.dart';
+import 'model/model_program.dart';
+import 'screen/screen_detail.dart';
+import 'screen/screen_find.dart';
+import 'screen/screen_home.dart';
+import 'screen/screen_login.dart';
 
 // flutter pub add url_launcher
 // flutter pub add fluttertoast
@@ -24,6 +19,14 @@ final initController = Get.put(AppData());
 // flutter pub add logger
 // flutter pub add animated_login (login_screen.dart)
 // flutter pub add async (CancelableOperation)
+void main() {
+  initController;
+  runApp(const MyApp());
+}
+
+final log = Logger();
+final initController = Get.put(AppData());
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -35,7 +38,8 @@ class MyApp extends StatelessWidget {
         if (snapshot.hasData) {
           AppData data = Get.find();
           data.prefs = snapshot.data!;
-          log.i('userName : ${data.prefs.getString('userName')}');
+          initData(data);
+
           return GetMaterialApp(
             initialRoute:
                 data.prefs.getString('userName') == '' ? '/login' : '/home',
@@ -43,7 +47,12 @@ class MyApp extends StatelessWidget {
               GetPage(
                 name: '/login',
                 page: () => const LoginScreen(),
-                transition: Transition.rightToLeft,
+                transition: Transition.size,
+              ),
+              GetPage(
+                name: '/find',
+                page: () => const FindScreen(),
+                transition: Transition.zoom,
               ),
               GetPage(
                 name: '/home',
@@ -77,11 +86,25 @@ class MyApp extends StatelessWidget {
       await prefs.setStringList('like', []);
     }
     if (prefs.getInt('urlNumber') == null) {
-      await prefs.setInt('urlNumber', 27);
+      await prefs.setInt('urlNumber', 28);
     }
     if (prefs.getString('userName') == null) {
       await prefs.setString('userName', '');
     }
     return prefs;
+  }
+
+  void initData(AppData data) {
+    data.episode = EpisodeModel(
+      title: data.prefs.getString('title') ?? '',
+      id: data.prefs.getString('id') ?? '',
+    ).obs;
+    List<ProgramModel> list = [];
+    for (var program in data.programs) {
+      if (data.prefs.getStringList('like')!.contains(program.id)) {
+        list.add(program);
+      }
+    }
+    data.heartPrograms = RxList(list);
   }
 }

@@ -1,9 +1,9 @@
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../model/detail_model.dart';
-import '../model/episode_model.dart';
-import '../model/program_model.dart';
+import '../model/model_detail.dart';
+import '../model/model_episode.dart';
+import '../model/model_program.dart';
 
 class AppData extends GetxController {
   late SharedPreferences prefs;
@@ -18,11 +18,11 @@ class AppData extends GetxController {
   late List<EpisodeModel> episodes;
 
   // 선택한 회차
-  final episode = EpisodeModel(title: '', id: '').obs;
-  final clicked = RxBool(false);
+  late Rx<EpisodeModel> episode;
+  late RxBool liked;
 
   // 즐겨찾기 프로그램들
-  final heartPrograms = RxList<ProgramModel>([]);
+  late RxList<ProgramModel> heartPrograms;
 
   List<ProgramModel> programs = [
     ProgramModel(

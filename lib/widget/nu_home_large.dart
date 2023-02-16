@@ -30,7 +30,7 @@ class NuHomeLarge extends StatelessWidget {
             GetBuilder<AppData>(
               builder: (_) {
                 return SizedBox(
-                  child: isHeart && data.heartPrograms.value.isEmpty
+                  child: isHeart && data.heartPrograms.call().isEmpty
                       ? Container(
                           alignment: Alignment.center,
                           height: 300,
@@ -40,7 +40,7 @@ class NuHomeLarge extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             for (var program in isHeart
-                                ? data.heartPrograms.value
+                                ? data.heartPrograms.call()
                                 : data.programs)
                               NuProgram(program: program),
                           ],
@@ -62,7 +62,7 @@ class NuHomeLarge extends StatelessWidget {
                       '최근 본 영상 시청',
                       style: TextStyle(
                         fontSize: 23,
-                        color: Colors.green,
+                        color: Colors.cyan,
                       ),
                     ),
                     const SizedBox(
@@ -83,16 +83,21 @@ class NuHomeLarge extends StatelessWidget {
                     ),
                     SizedBox(
                       width: 350,
-                      child: ProgressBar(
-                        thumbColor: Colors.green,
-                        baseBarColor: Colors.green.withOpacity(0.3),
-                        progressBarColor: Colors.green,
-                        progress: Duration(
-                          milliseconds: data.prefs.getInt('progress') ?? 0,
-                        ),
-                        total: const Duration(minutes: 80),
-                        onSeek: (percent) {
-                          data.prefs.setInt('progress', percent.inMilliseconds);
+                      child: GetBuilder<AppData>(
+                        builder: (con) {
+                          return ProgressBar(
+                            thumbColor: Colors.cyan,
+                            baseBarColor: Colors.cyan.withOpacity(0.3),
+                            progressBarColor: Colors.cyan,
+                            progress: Duration(
+                              milliseconds: data.prefs.getInt('progress') ?? 0,
+                            ),
+                            total: const Duration(minutes: 80),
+                            onSeek: (percent) {
+                              data.prefs
+                                  .setInt('progress', percent.inMilliseconds);
+                            },
+                          );
                         },
                       ),
                     ),
@@ -107,7 +112,7 @@ class NuHomeLarge extends StatelessWidget {
                         '즐겨찾기',
                         style: TextStyle(
                           fontSize: 23,
-                          color: Colors.green,
+                          color: Colors.cyan,
                         ),
                       ),
                       const SizedBox(
@@ -130,7 +135,7 @@ class NuHomeLarge extends StatelessWidget {
                                 color: Colors.black.withOpacity(0.3),
                               ),
                             ],
-                            color: Colors.green,
+                            color: Colors.cyan,
                           ),
                         ),
                         iconSize: 100,
@@ -144,7 +149,7 @@ class NuHomeLarge extends StatelessWidget {
                       '영상이 안보일때 클릭',
                       style: TextStyle(
                         fontSize: 23,
-                        color: Colors.green,
+                        color: Colors.cyan,
                       ),
                     ),
                     const SizedBox(
@@ -165,7 +170,7 @@ class NuHomeLarge extends StatelessWidget {
                               color: Colors.black.withOpacity(0.3),
                             ),
                           ],
-                          color: Colors.green,
+                          color: Colors.cyan,
                         ),
                       ),
                       iconSize: 100,
@@ -181,62 +186,28 @@ class NuHomeLarge extends StatelessWidget {
     );
   }
 
-  Future<dynamic> showUrlDialog(BuildContext context, SharedPreferences prefs) {
-    return showDialog(
-      context: context,
-      builder: (BuildContext context) => AlertDialog(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
-        ),
-        backgroundColor: Colors.white,
-        title: const Center(
-          child: Text(
-            '업데이트 할까요?',
-            style: TextStyle(
-              color: Colors.green,
-            ),
-          ),
-        ),
-        actions: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              TextButton(
-                onPressed: () {
-                  prefs.setInt(
-                    'urlNumber',
-                    prefs.getInt('urlNumber')! + 1,
-                  );
-                  Get.back();
-                  Util.showSnackBar(message: '사이트 주소가 업데이트 되었습니다.');
-                },
-                child: const Text(
-                  '업데이트',
-                  style: TextStyle(
-                    color: Colors.green,
-                  ),
-                ),
-              ),
-              TextButton(
-                onPressed: () {
-                  prefs.setInt(
-                    'urlNumber',
-                    prefs.getInt('urlNumber')! - 1,
-                  );
-                  Get.back();
-                  Util.showSnackBar(message: '사이트 주소를 이전으로 돌렸습니다.');
-                },
-                child: const Text(
-                  '되돌리기',
-                  style: TextStyle(
-                    color: Colors.green,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
+  Future<bool> showUrlDialog(BuildContext context, SharedPreferences prefs) {
+    Util.showYesNoDialog(
+      title: '업데이트 할까요?',
+      noText: '되돌리기',
+      onNoPressed: () {
+        prefs.setInt(
+          'urlNumber',
+          prefs.getInt('urlNumber')! - 1,
+        );
+        Get.back();
+        Util.showSnackBar(message: '사이트 주소를 이전으로 돌렸습니다.');
+      },
+      yesText: '업데이트',
+      onYesPressed: () {
+        prefs.setInt(
+          'urlNumber',
+          prefs.getInt('urlNumber')! + 1,
+        );
+        Get.back();
+        Util.showSnackBar(message: '사이트 주소가 업데이트 되었습니다.');
+      },
     );
+    return Future.value(true);
   }
 }

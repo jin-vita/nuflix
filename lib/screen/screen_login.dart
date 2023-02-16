@@ -5,8 +5,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:nuflix/data/app_data.dart';
 
-import '../util/dialog_builders.dart';
 import '../util/login_functions.dart';
+import '../util/util.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -65,7 +65,7 @@ class _LoginScreenState extends State<LoginScreen> {
     final String? res = await _operation?.valueOrCancellation();
     if (_operation?.isCompleted == true) {
       if (!res!.startsWith('OK')) {
-        DialogBuilder(context).showResultDialog(res);
+        Util.showTextDialog(title: res);
       } else {
         final userName = res.split('|')[1];
         await Get.find<AppData>().prefs.setString('userName', userName);
@@ -253,26 +253,9 @@ class _LoginScreenState extends State<LoginScreen> {
         LoginFunctions(context).socialLogin(type));
     final String? res = await _operation?.valueOrCancellation();
     if (_operation?.isCompleted == true && res == null) {
-      // DialogBuilder(context)
-      //     .showResultDialog('Successfully logged in with $type.');
+      // Util.showTextDialog(title: 'Successfully logged in with $type.');
       Get.toNamed('/home');
     }
     return res;
-  }
-}
-
-/// Example forgot password screen
-class ForgotPasswordScreen extends StatelessWidget {
-  /// Example forgot password screen that user is navigated to
-  /// after clicked on "Forgot Password?" text.
-  const ForgotPasswordScreen({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(
-        child: Text('FORGOT PASSWORD'),
-      ),
-    );
   }
 }

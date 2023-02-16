@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
 import '../data/app_data.dart';
-import '../model/program_model.dart';
+import '../model/model_program.dart';
 import 'nu_thumb_card.dart';
 
 class NuProgram extends StatelessWidget {

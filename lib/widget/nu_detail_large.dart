@@ -15,42 +15,64 @@ class NuDetailLarge extends StatelessWidget {
     AppData data = Get.find();
     return Column(
       children: [
-        NuThumbCard(
-          program: data.program,
-          height: 400,
-        ),
-        const SizedBox(
-          height: 20,
-        ),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text(
-              '${data.detail.birth}  |  ${data.detail.genre}',
-              style: const TextStyle(
-                fontSize: 11,
-              ),
+            NuThumbCard(
+              program: data.program,
+              height: 130,
             ),
             const SizedBox(
-              height: 5,
+              width: 30,
             ),
-            Text(
-              data.detail.about,
-              style: const TextStyle(
-                fontSize: 12,
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('${data.detail.birth}  |  ${data.detail.genre}'),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Text(
+                    data.detail.about,
+                    style: const TextStyle(
+                      fontSize: 20,
+                    ),
+                  ),
+                ],
               ),
             ),
           ],
         ),
         const SizedBox(
-          height: 20,
+          height: 30,
         ),
-        Column(
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            for (var episode in data.episodes)
-              NuEpisode(
-                episode: episode,
+            Flexible(
+              child: Column(
+                children: [
+                  for (int i = 0; i < 6; i++)
+                    NuEpisode(
+                      episode: data.episodes[i],
+                    ),
+                ],
               ),
+            ),
+            const SizedBox(
+              width: 30,
+            ),
+            Flexible(
+              child: Column(
+                children: [
+                  for (int i = 6; i < data.episodes.length; i++)
+                    NuEpisode(
+                      episode: data.episodes[i],
+                    ),
+                ],
+              ),
+            ),
           ],
         ),
       ],

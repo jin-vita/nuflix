@@ -3,11 +3,12 @@ import 'dart:convert';
 import 'package:animated_login/animated_login.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:nuflix/util/util.dart';
 
 import '../main.dart';
 import '../response/res_user_insert.dart';
 import '../response/res_user_list.dart';
-import 'dialog_builders.dart';
 
 class LoginFunctions {
   /// Collection of functions will be performed on login/signup.
@@ -24,6 +25,7 @@ class LoginFunctions {
     if (loginData.password != 'Aquacuck1!') {
       return '비밀번호가 맞지 않습니다\n다시 확인해주세요';
     }
+    await Future.delayed(const Duration(seconds: 2));
     return 'OK|뚜루루껑';
     final dio = Dio();
     dio.options.headers['Content-Type'] =
@@ -59,6 +61,7 @@ class LoginFunctions {
     if (signupData.password != signupData.confirmPassword) {
       return '비밀번호가 같지 않습니다\n다시 확인해주세요';
     }
+    await Future.delayed(const Duration(seconds: 2));
     return '지금은 계정을 추가로\n생성할 수 없습니다 죄송합니다';
     final dio = Dio();
     dio.options.headers['Content-Type'] =
@@ -98,10 +101,9 @@ class LoginFunctions {
   /// Action that will be performed on click to "Forgot Password?" text/CTA.
   /// Probably you will navigate user to a page to create a new password after the verification.
   Future<String?> onForgotPassword(String email) async {
-    DialogBuilder(context).showLoadingDialog();
+    Util.showLoadingDialog(context);
     await Future.delayed(const Duration(seconds: 2));
-    Navigator.of(context).pop();
-    Navigator.of(context).pushNamed('/forgotPass');
+    Get.toNamed('/find');
     return null;
   }
 }

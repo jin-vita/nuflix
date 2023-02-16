@@ -4,8 +4,8 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../data/app_data.dart';
-import '../model/episode_model.dart';
-import '../model/program_model.dart';
+import '../model/model_episode.dart';
+import '../model/model_program.dart';
 import '../util/util.dart';
 import 'nu_episode.dart';
 import 'nu_program.dart';
@@ -71,7 +71,7 @@ class NuHomeSmall extends StatelessWidget {
                     '최근 본 영상 시청',
                     style: TextStyle(
                       fontSize: 23,
-                      color: Colors.green,
+                      color: Colors.cyan,
                     ),
                   ),
                   const SizedBox(
@@ -94,9 +94,9 @@ class NuHomeSmall extends StatelessWidget {
                   SizedBox(
                     width: 350,
                     child: ProgressBar(
-                      thumbColor: Colors.green,
-                      baseBarColor: Colors.green.withOpacity(0.3),
-                      progressBarColor: Colors.green,
+                      thumbColor: Colors.cyan,
+                      baseBarColor: Colors.cyan.withOpacity(0.3),
+                      progressBarColor: Colors.cyan,
                       progress: Duration(
                         milliseconds: data.prefs.getInt('progress') ?? 0,
                       ),
@@ -117,7 +117,7 @@ class NuHomeSmall extends StatelessWidget {
                           '즐겨찾기',
                           style: TextStyle(
                             fontSize: 23,
-                            color: Colors.green,
+                            color: Colors.cyan,
                           ),
                         ),
                         IconButton(
@@ -129,7 +129,7 @@ class NuHomeSmall extends StatelessWidget {
                           },
                           icon: const Icon(
                             Icons.folder_special,
-                            color: Colors.green,
+                            color: Colors.cyan,
                           ),
                           iconSize: 90,
                         ),
@@ -145,7 +145,7 @@ class NuHomeSmall extends StatelessWidget {
                         '영상이 안보일때 클릭',
                         style: TextStyle(
                           fontSize: 23,
-                          color: Colors.green,
+                          color: Colors.cyan,
                         ),
                       ),
                       IconButton(
@@ -161,7 +161,7 @@ class NuHomeSmall extends StatelessWidget {
                               color: Colors.black.withOpacity(0.3),
                             ),
                           ],
-                          color: Colors.green,
+                          color: Colors.cyan,
                         ),
                         iconSize: 90,
                       ),
@@ -188,7 +188,7 @@ class NuHomeSmall extends StatelessWidget {
           child: Text(
             '업데이트 할까요?',
             style: TextStyle(
-              color: Colors.green,
+              color: Colors.cyan,
             ),
           ),
         ),
@@ -208,7 +208,7 @@ class NuHomeSmall extends StatelessWidget {
                 child: const Text(
                   '업데이트',
                   style: TextStyle(
-                    color: Colors.green,
+                    color: Colors.cyan,
                   ),
                 ),
               ),
@@ -224,7 +224,7 @@ class NuHomeSmall extends StatelessWidget {
                 child: const Text(
                   '되돌리기',
                   style: TextStyle(
-                    color: Colors.green,
+                    color: Colors.cyan,
                   ),
                 ),
               ),

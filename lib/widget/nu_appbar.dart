@@ -18,7 +18,7 @@ class NuAppBar extends StatelessWidget with PreferredSizeWidget {
       automaticallyImplyLeading: hasIcon,
       elevation: 3,
       backgroundColor: Colors.white,
-      foregroundColor: Colors.green,
+      foregroundColor: Colors.cyan,
       actions: actions,
       centerTitle: true,
       title: Text(
