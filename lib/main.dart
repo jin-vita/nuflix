@@ -1,22 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:logger/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'data/app_data.dart';
+import 'screen/detail_screen.dart';
 import 'screen/home_screen.dart';
+import 'screen/login_screen.dart';
 
 void main() {
   initController;
   runApp(const MyApp());
 }
 
+final log = Logger();
 final initController = Get.put(AppData());
 
-// $ flutter pub add url_launcher
-// $ flutter pub add fluttertoast
-// $ flutter pub add audio_video_progress_bar
-// $ flutter pub add provider
-// $ flutter pub add get
+// flutter pub add url_launcher
+// flutter pub add fluttertoast
+// flutter pub add audio_video_progress_bar
+// flutter pub add get
+// flutter pub add logger
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -28,8 +32,30 @@ class MyApp extends StatelessWidget {
         if (snapshot.hasData) {
           AppData data = Get.find();
           data.prefs = snapshot.data!;
-          return const GetMaterialApp(
-            home: HomeScreen(),
+          return GetMaterialApp(
+            initialRoute: '/home',
+            getPages: [
+              GetPage(
+                name: '/login',
+                page: () => const LoginScreen(),
+                transition: Transition.rightToLeft,
+              ),
+              GetPage(
+                name: '/home',
+                page: () => const HomeScreen(),
+                transition: Transition.rightToLeft,
+              ),
+              GetPage(
+                  name: '/heart',
+                  page: () => const HomeScreen(isHeart: true),
+                  transition: Transition.fadeIn),
+              GetPage(
+                name: '/detail',
+                page: () => const DetailScreen(),
+                transition: Transition.circularReveal,
+                transitionDuration: const Duration(milliseconds: 450),
+              ),
+            ],
           );
         }
         return const Center(

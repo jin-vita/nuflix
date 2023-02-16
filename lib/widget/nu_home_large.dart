@@ -1,11 +1,9 @@
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../data/app_data.dart';
-import '../screen/home_screen.dart';
 import '../util/util.dart';
 import 'nu_episode.dart';
 import 'nu_program.dart';
@@ -119,14 +117,7 @@ class NuHomeLarge extends StatelessWidget {
                         onPressed: () {
                           data.prefs.getStringList('like')!.isEmpty
                               ? Util.showSnackBar(message: '즐겨찾기한 프로그램이 없습니다.')
-                              : Navigator.push(
-                                  context,
-                                  CupertinoPageRoute(
-                                    builder: (context) =>
-                                        const HomeScreen(isHeart: true),
-                                    fullscreenDialog: true,
-                                  ),
-                                );
+                              : Get.toNamed('/heart');
                         },
                         icon: Transform.scale(
                           scale: 1.5,
@@ -216,7 +207,7 @@ class NuHomeLarge extends StatelessWidget {
                     'urlNumber',
                     prefs.getInt('urlNumber')! + 1,
                   );
-                  Navigator.pop(context);
+                  Get.back();
                   Util.showSnackBar(message: '사이트 주소가 업데이트 되었습니다.');
                 },
                 child: const Text(
@@ -232,7 +223,7 @@ class NuHomeLarge extends StatelessWidget {
                     'urlNumber',
                     prefs.getInt('urlNumber')! - 1,
                   );
-                  Navigator.pop(context);
+                  Get.back();
                   Util.showSnackBar(message: '사이트 주소를 이전으로 돌렸습니다.');
                 },
                 child: const Text(

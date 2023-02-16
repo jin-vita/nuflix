@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../data/app_data.dart';
-import '../model/program_model.dart';
 import '../widget/nu_appbar.dart';
 import '../widget/nu_detail_large.dart';
 import '../widget/nu_detail_small.dart';
@@ -10,15 +9,11 @@ import '../widget/nu_detail_small.dart';
 class DetailScreen extends StatelessWidget {
   const DetailScreen({
     super.key,
-    required this.program,
   });
-
-  final ProgramModel program;
 
   @override
   Widget build(BuildContext context) {
     AppData data = Get.find();
-    data.program = program;
     data.setDetail(id: data.program.id);
     data.clicked.value =
         data.prefs.getStringList('like')!.contains(data.program.id)
@@ -62,8 +57,10 @@ class DetailScreen extends StatelessWidget {
       ),
       body: WillPopScope(
         onWillPop: () {
-          Navigator.pop(context, 'back');
-          return Future(() => false);
+          Get.find<AppData>().update();
+          Get.back();
+          return Future.value(false);
+          // return Future(() => false);
         },
         child: SingleChildScrollView(
           child: Padding(

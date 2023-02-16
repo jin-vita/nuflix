@@ -22,7 +22,7 @@ class AppData extends GetxController {
   final clicked = RxBool(false);
 
   // 즐겨찾기 프로그램들
-  final heartPrograms = RxList<ProgramModel>([]).obs;
+  final heartPrograms = RxList<ProgramModel>([]);
 
   List<ProgramModel> programs = [
     ProgramModel(

@@ -1,5 +1,4 @@
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -7,7 +6,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../data/app_data.dart';
 import '../model/episode_model.dart';
 import '../model/program_model.dart';
-import '../screen/home_screen.dart';
 import '../util/util.dart';
 import 'nu_episode.dart';
 import 'nu_program.dart';
@@ -127,14 +125,7 @@ class NuHomeSmall extends StatelessWidget {
                             data.prefs.getStringList('like')!.isEmpty
                                 ? Util.showSnackBar(
                                     message: '즐겨찾기한 프로그램이 없습니다.')
-                                : Navigator.push(
-                                    context,
-                                    CupertinoPageRoute(
-                                      builder: (context) =>
-                                          const HomeScreen(isHeart: true),
-                                      fullscreenDialog: true,
-                                    ),
-                                  );
+                                : Get.toNamed('/heart');
                           },
                           icon: const Icon(
                             Icons.folder_special,
@@ -211,7 +202,7 @@ class NuHomeSmall extends StatelessWidget {
                     'urlNumber',
                     prefs.getInt('urlNumber')! + 1,
                   );
-                  Navigator.pop(context);
+                  Get.back();
                   Util.showSnackBar(message: '사이트 주소를 이전으로 돌렸습니다.');
                 },
                 child: const Text(
@@ -227,7 +218,7 @@ class NuHomeSmall extends StatelessWidget {
                     'urlNumber',
                     prefs.getInt('urlNumber')! - 1,
                   );
-                  Navigator.pop(context);
+                  Get.back();
                   Util.showSnackBar(message: '사이트 주소를 이전으로 돌렸습니다.');
                 },
                 child: const Text(

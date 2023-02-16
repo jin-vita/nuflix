@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 
 import '../data/app_data.dart';
 import '../model/program_model.dart';
-import '../screen/detail_screen.dart';
 import 'nu_thumb_card.dart';
 
 class NuProgram extends StatelessWidget {
@@ -16,19 +15,9 @@ class NuProgram extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    AppData data = Get.find();
     Future<void> goDetailScreen(context) async {
-      final result = await Navigator.push(
-        context,
-        CupertinoPageRoute(
-          builder: (context) => DetailScreen(
-            program: program,
-          ),
-          fullscreenDialog: true,
-        ),
-      );
-      print('돌아옴 result : $result, program : ${program.title}');
-      data.update();
+      Get.find<AppData>().program = program;
+      Get.toNamed('/detail');
     }
 
     return GestureDetector(
