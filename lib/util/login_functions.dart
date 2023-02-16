@@ -21,7 +21,7 @@ class LoginFunctions {
     if (loginData.email != 'cuckaqua@gmail.com') {
       return '등록되지 않은 이메일입니다\n다시 확인해주세요';
     }
-    if (loginData.password != 'aquacuck1!') {
+    if (loginData.password != 'Aquacuck1!') {
       return '비밀번호가 맞지 않습니다\n다시 확인해주세요';
     }
     return 'OK|뚜루루껑';
