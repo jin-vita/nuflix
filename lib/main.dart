@@ -86,7 +86,7 @@ class MyApp extends StatelessWidget {
       await prefs.setStringList('like', []);
     }
     if (prefs.getInt('urlNumber') == null) {
-      await prefs.setInt('urlNumber', 28);
+      await prefs.setInt('urlNumber', 27);
     }
     if (prefs.getString('userName') == null) {
       await prefs.setString('userName', '');
