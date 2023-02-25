@@ -66,7 +66,7 @@ class NuHomeLarge extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(
-                      height: 30,
+                      height: 10,
                     ),
                     Obx(
                       () => SizedBox(
@@ -99,6 +99,27 @@ class NuHomeLarge extends StatelessWidget {
                             },
                           );
                         },
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    const Text(
+                      '다음회 영상 시청',
+                      style: TextStyle(
+                        fontSize: 23,
+                        color: Colors.cyan,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Obx(
+                      () => SizedBox(
+                        width: 350,
+                        child: data.episode.value.id == ''
+                            ? const SizedBox()
+                            : NuEpisode(episode: data.nextEpisode.value),
                       ),
                     ),
                   ],

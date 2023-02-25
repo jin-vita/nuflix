@@ -99,6 +99,10 @@ class MyApp extends StatelessWidget {
       title: data.prefs.getString('title') ?? '',
       id: data.prefs.getString('id') ?? '',
     ).obs;
+    data.nextEpisode = EpisodeModel(
+      title: data.prefs.getString('nextTitle') ?? '',
+      id: data.prefs.getString('nextId') ?? '',
+    ).obs;
     List<ProgramModel> list = [];
     for (var program in data.programs) {
       if (data.prefs.getStringList('like')!.contains(program.id)) {

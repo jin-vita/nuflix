@@ -19,6 +19,11 @@ class AppData extends GetxController {
 
   // 선택한 회차
   late Rx<EpisodeModel> episode;
+
+  // 선택한 회차의 다음 회차
+  late Rx<EpisodeModel> nextEpisode;
+
+  // 즐겨찾기
   late RxBool liked;
 
   // 즐겨찾기 프로그램들
