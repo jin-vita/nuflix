@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../data/app_data.dart';
-import '../model/model_episode.dart';
 import '../model/model_program.dart';
 import '../util/util.dart';
 import 'nu_episode.dart';
@@ -36,31 +35,34 @@ class NuHomeSmall extends StatelessWidget {
         ),
         child: Column(
           children: [
-            isHeart && myPrograms.isEmpty
-                ? Container(
-                    alignment: Alignment.center,
-                    height: 300,
-                    child: const Text('즐겨찾기한 프로그램이 없습니다.'),
-                  )
-                : SizedBox(
-                    height: 370,
-                    child: ListView.separated(
-                      scrollDirection: Axis.horizontal,
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 30,
-                      ),
-                      itemCount:
-                          isHeart ? myPrograms.length : data.programs.length,
-                      itemBuilder: (context, index) {
-                        var program =
-                            isHeart ? myPrograms[index] : data.programs[index];
-                        return NuProgram(program: program);
-                      },
-                      separatorBuilder: (context, index) => const SizedBox(
-                        width: 30,
-                      ),
-                    ),
-                  ),
+            GetBuilder<AppData>(
+              builder: (_) {
+                return isHeart && data.heartPrograms.call().isEmpty
+                    ? Container(
+                        alignment: Alignment.center,
+                        height: 300,
+                        child: const Text('즐겨찾기한 프로그램이 없습니다.'),
+                      )
+                    : SizedBox(
+                        height: 360,
+                        child: ListView.separated(
+                          scrollDirection: Axis.horizontal,
+                          padding: const EdgeInsets.symmetric(horizontal: 30),
+                          itemCount: isHeart
+                              ? myPrograms.length
+                              : data.programs.length,
+                          itemBuilder: (context, index) {
+                            var program = isHeart
+                                ? myPrograms[index]
+                                : data.programs[index];
+                            return NuProgram(program: program);
+                          },
+                          separatorBuilder: (context, index) =>
+                              const SizedBox(width: 30),
+                        ),
+                      );
+              },
+            ),
             Container(
               padding: const EdgeInsets.symmetric(
                 horizontal: 50,
@@ -74,41 +76,51 @@ class NuHomeSmall extends StatelessWidget {
                       color: Colors.cyan,
                     ),
                   ),
-                  const SizedBox(
-                    height: 25,
-                  ),
-                  SizedBox(
-                    width: 350,
-                    child: data.prefs.getString('id') == null
-                        ? const Center(child: Text('최근 본 영상이 없습니다.'))
-                        : NuEpisode(
-                            episode: EpisodeModel(
-                              title: data.prefs.getString('title')!,
-                              id: data.prefs.getString('id')!,
-                            ),
-                          ),
-                  ),
-                  const SizedBox(
-                    height: 25,
-                  ),
-                  SizedBox(
-                    width: 350,
-                    child: ProgressBar(
-                      thumbColor: Colors.cyan,
-                      baseBarColor: Colors.cyan.withOpacity(0.3),
-                      progressBarColor: Colors.cyan,
-                      progress: Duration(
-                        milliseconds: data.prefs.getInt('progress') ?? 0,
-                      ),
-                      total: const Duration(minutes: 80),
-                      onSeek: (percent) {
-                        data.prefs.setInt('progress', percent.inMilliseconds);
-                      },
+                  const SizedBox(height: 15),
+                  Obx(
+                    () => SizedBox(
+                      width: 350,
+                      child: data.episode.value.id == ''
+                          ? const Center(child: Text('최근 본 영상이 없습니다.'))
+                          : NuEpisode(episode: data.episode.value),
                     ),
                   ),
-                  const SizedBox(
-                    height: 25,
+                  const SizedBox(height: 10),
+                  SizedBox(
+                    width: 350,
+                    child: GetBuilder<AppData>(builder: (context) {
+                      return ProgressBar(
+                        thumbColor: Colors.cyan,
+                        baseBarColor: Colors.cyan.withOpacity(0.3),
+                        progressBarColor: Colors.cyan,
+                        progress: Duration(
+                          milliseconds: data.prefs.getInt('progress') ?? 0,
+                        ),
+                        total: const Duration(minutes: 80),
+                        onSeek: (percent) {
+                          data.prefs.setInt('progress', percent.inMilliseconds);
+                        },
+                      );
+                    }),
                   ),
+                  const SizedBox(height: 10),
+                  const Text(
+                    '다음회 영상 시청',
+                    style: TextStyle(
+                      fontSize: 23,
+                      color: Colors.cyan,
+                    ),
+                  ),
+                  const SizedBox(height: 15),
+                  Obx(
+                    () => SizedBox(
+                      width: 350,
+                      child: data.episode.value.id == ''
+                          ? const SizedBox()
+                          : NuEpisode(episode: data.nextEpisode.value),
+                    ),
+                  ),
+                  const SizedBox(height: 15),
                   Visibility(
                     visible: !isHeart,
                     child: Column(
@@ -133,9 +145,7 @@ class NuHomeSmall extends StatelessWidget {
                           ),
                           iconSize: 90,
                         ),
-                        const SizedBox(
-                          height: 25,
-                        ),
+                        const SizedBox(height: 15),
                       ],
                     ),
                   ),
