@@ -19,10 +19,10 @@ class LoginFunctions {
 
   /// Login action that will be performed on click to action button in login mode.
   Future<String?> onLogin(LoginData loginData) async {
-    if (loginData.email != 'cuckaqua@gmail.com') {
+    if (loginData.email != 'qqqqwwww@gmail.com') {
       return '등록되지 않은 이메일입니다\n다시 확인해주세요';
     }
-    if (loginData.password != 'Aquacuck1!') {
+    if (loginData.password != 'Qqqqwwww1!') {
       return '비밀번호가 맞지 않습니다\n다시 확인해주세요';
     }
     await Future.delayed(const Duration(seconds: 2));
