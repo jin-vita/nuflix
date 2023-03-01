@@ -22,7 +22,7 @@ class LoginFunctions {
     if (loginData.email != 'qqqwww@gmail.com') {
       return '등록되지 않은 이메일입니다\n다시 확인해주세요';
     }
-    if (loginData.password != 'Qqqwww!') {
+    if (loginData.password != 'Qqqwww1!') {
       return '비밀번호가 맞지 않습니다\n다시 확인해주세요';
     }
     await Future.delayed(const Duration(seconds: 2));
