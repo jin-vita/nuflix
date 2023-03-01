@@ -20,8 +20,20 @@ class NuEpisode extends StatelessWidget {
     onButtonTap() async {
       if (data.prefs.getString('id') == episode.id) {
         final time = Duration(milliseconds: data.prefs.getInt('progress') ?? 0);
-        Fluttertoast.showToast(msg: '이전 종료 시점 : ${'$time'.split('.').first}');
+        Fluttertoast.showToast(msg: '이전 종료 시점 : ${'$time'
+            .split('.')
+            .first}');
       } else {
+        // 선택한 회차의 다음 회차 저장하기
+        final nextIndex = data.episodes.last == episode
+            ? -1
+            : data.episodes.indexOf(episode) + 1;
+        data.nextEpisode.value = nextIndex == -1
+            ? EpisodeModel(title: '', id: '')
+            : data.episodes[nextIndex];
+        await data.prefs.setString('nextId', data.nextEpisode.value.id);
+        await data.prefs.setString('nextTitle', data.nextEpisode.value.title);
+
         data.episode.value = episode;
         data.prefs.setInt('progress', 0);
         Fluttertoast.showToast(msg: '새로운 영상을 시작합니다.');
@@ -29,7 +41,8 @@ class NuEpisode extends StatelessWidget {
       await data.prefs.setString('id', episode.id);
       await data.prefs.setString('title', episode.title);
       final url = Uri.parse(
-          'https://noonoo${data.prefs.getInt('urlNumber')}.tv/old_entertainment/${episode.id}');
+          'https://noonoo${data.prefs.getInt(
+              'urlNumber')}.tv/old_entertainment/${episode.id}');
       await launchUrl(url);
     }
 

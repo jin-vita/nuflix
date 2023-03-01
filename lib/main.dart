@@ -86,7 +86,7 @@ class MyApp extends StatelessWidget {
       await prefs.setStringList('like', []);
     }
     if (prefs.getInt('urlNumber') == null) {
-      await prefs.setInt('urlNumber', 27);
+      await prefs.setInt('urlNumber', 29);
     }
     if (prefs.getString('userName') == null) {
       await prefs.setString('userName', '');
@@ -98,6 +98,10 @@ class MyApp extends StatelessWidget {
     data.episode = EpisodeModel(
       title: data.prefs.getString('title') ?? '',
       id: data.prefs.getString('id') ?? '',
+    ).obs;
+    data.nextEpisode = EpisodeModel(
+      title: data.prefs.getString('nextTitle') ?? '',
+      id: data.prefs.getString('nextId') ?? '',
     ).obs;
     List<ProgramModel> list = [];
     for (var program in data.programs) {
